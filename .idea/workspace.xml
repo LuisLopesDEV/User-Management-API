@@ -6,15 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0724caae-30f7-4613-b673-87ddef189a17" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/Database/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routes/resources.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/resources.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/script.py.mako" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/533e0a8f030d_initial_migration.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/schemas.py" afterDir="false" />
     </list>
@@ -41,6 +34,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -55,6 +49,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Luís\Documents\GitHub\App" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
