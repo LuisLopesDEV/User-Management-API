@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 import bcrypt
 from Database.database import User
 from schemas import UserSchema
-from Routes.resources import get_session
+from Routes.resources import get_session, verify_token
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
@@ -30,3 +30,13 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
         session.add(new_user)
         session.commit()
     return {'mensagem': f'Usuário criado com sucesso! Email: {schema_user.email}'}
+
+@users_router.get('/users')
+async def all_users(user: User = Depends(verify_token), session: Session = Depends(get_session)):
+    if not user.admin:
+        raise HTTPException(
+            status_code=403,
+            detail='Você não tem autorização para fazer essa operação'
+        )
+    users = session.query(User).all()
+    return {'users': users}

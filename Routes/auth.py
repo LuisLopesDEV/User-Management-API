@@ -8,6 +8,7 @@ from schemas import LoginSchema
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordRequestForm
+
 auth_router = APIRouter(prefix="/auth", tags=['Auth'])
 
 
@@ -38,6 +39,21 @@ async def login(login_schema: LoginSchema,session: Session = Depends(get_session
         return {
             'access_token': access_token,
             'refresh_token': refresh_token,
+            'token_type': 'bearer'
+        }
+
+@auth_router.post('/login-form')
+async def login_form(
+        form_data: OAuth2PasswordRequestForm = Depends(),
+        session: Session = Depends(get_session)):
+
+    user = authenticate_user(form_data.username, form_data.password, session)
+    if not user:
+        raise HTTPException(status_code=400, detail="Email ou senha incorreto")
+    else:
+        access_token = create_token(user.id)
+        return {
+            'access_token': access_token,
             'token_type': 'bearer'
         }
 
