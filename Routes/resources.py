@@ -1,9 +1,9 @@
 from fastapi import Depends, HTTPException
 from Database.database import db, User
-
 from sqlalchemy.orm import sessionmaker, Session
 from jose import jwt, JWTError
 from main import SECRET_KEY, ALGORITHM, oauth2_schema
+from security import token_blacklist
 
 def get_session():
     try:
@@ -13,14 +13,17 @@ def get_session():
     finally:
         session.close()
 
-def verify_token(token: str = Depends(oauth2_schema), session: Session = Depends(get_session)):
-    try:
-        dict_info = jwt.decode(token, SECRET_KEY, ALGORITHM)
-        id_usuario = int(dict_info.get("sub"))
-    except:
-        raise HTTPException(status_code=401, detail='Acesso Negado')
-    user = session.query(User).filter(User.id == id_usuario).first()
-    if not user:
-        raise HTTPException(status_code=401, detail='Acesso Inválido')
+def verify_token(
+    token: str = Depends(oauth2_schema),
+    db: Session = Depends(get_session)
+):
+    token_db = db.query(Token).filter(
+        Token.token == token,
+        Token.is_active == True,
+        Token.expires_at > datetime.now(timezone.utc)
+    ).first()
 
-    return user
+    if not token_db:
+        raise HTTPException(status_code=401, detail="Token inválido")
+
+    return token_db.user

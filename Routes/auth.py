@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 import bcrypt
 from sqlalchemy.orm import Session
-from main import SECRET_KEY, ACCESS_TOKEN_EXPIRES_MINUTES, ALGORITHM
-from Database.database import User
+from main import SECRET_KEY, ACCESS_TOKEN_EXPIRES_MINUTES, ALGORITHM, oauth2_schema
+from Database.database import User, Token
 from Routes.resources import get_session
 from schemas import LoginSchema
 from jose import jwt, JWTError
@@ -22,25 +22,55 @@ def authenticate_user(email, senha, session):
     else:
         return user
 
-def create_token(id_usuario, duracao_token=timedelta(minutes=ACCESS_TOKEN_EXPIRES_MINUTES)):
-    expiration_date = datetime.now(timezone.utc) + duracao_token
-    dic_info = {'sub': str(id_usuario), 'exp': expiration_date}
-    jwt_codify = jwt.encode(dic_info, SECRET_KEY, ALGORITHM)
-    return jwt_codify
+def create_token(user_id: int, remember: bool):
+    if remember:
+        expires = timedelta(days=30)
+    else:
+        expires = timedelta(minutes=30)
+
+    expires_at = datetime.now(timezone.utc) + expires
+
+    payload = {
+        "sub": str(user_id),
+        "exp": expires_at
+    }
+
+    token = jwt.encode(payload, SECRET_KEY, ALGORITHM)
+    return token, expires_at
 
 @auth_router.post('/login')
-async def login(login_schema: LoginSchema,session: Session = Depends(get_session)):
-    user = authenticate_user(login_schema.email,login_schema.senha, session)
+async def login(
+    login_schema: LoginSchema,
+    db: Session = Depends(get_session)
+):
+    user = authenticate_user(
+        login_schema.email,
+        login_schema.senha,
+        db
+    )
+
     if not user:
-        return HTTPException(status_code=400, detail='Email ou senha incorretos')
-    else:
-        access_token = create_token(user.id)
-        refresh_token = create_token(user.id, duracao_token=timedelta(days=7))
-        return {
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-            'token_type': 'bearer'
-        }
+        raise HTTPException(
+            status_code=400,
+            detail='Email ou senha incorretos'
+        )
+
+    token, expires_at = create_token(user.id, user.remember)
+
+    token_db = Token(
+        user_id=user.id,
+        token=token,
+        expires_at=expires_at
+    )
+
+    db.add(token_db)
+    db.commit()
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "expires_at": expires_at
+    }
 
 @auth_router.post('/login-form')
 async def login_form(
@@ -50,14 +80,29 @@ async def login_form(
     user = authenticate_user(form_data.username, form_data.password, session)
     if not user:
         raise HTTPException(status_code=400, detail="Email ou senha incorreto")
-    else:
-        access_token = create_token(user.id)
-        return {
-            'access_token': access_token,
-            'token_type': 'bearer'
-        }
+
+    token, expires_at = create_token(user.id, user.remember)
+    token_db = Token(
+        token=token,
+        user_id=user.id,
+        expires_at=expires_at,
+        is_active=True
+    )
+
+    session.add(token_db)
+    session.commit()
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+    }
 
 @auth_router.post('/logout')
-async def logout():
-    return {'message': 'logout concluido'}
+def logout(token: str = Depends(oauth2_schema), db: Session = Depends(get_session)):
+    token_db = db.query(Token).filter(Token.token == token, Token.is_active==True).first()
+    print(token)
+    if not token_db:
+        raise HTTPException(status_code=400, detail="Token já inválido")
+    token_db.is_active = False
+    db.commit()
+    return {'message': 'Logout realizado com sucesso'}
 

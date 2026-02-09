@@ -25,6 +25,7 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
             schema_user.email,
             hash_senha,
             schema_user.ativo,
+            schema_user.remember_me,
             schema_user.admin
         )
         session.add(new_user)

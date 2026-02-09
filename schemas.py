@@ -6,6 +6,7 @@ class UserSchema(BaseModel):
     email: str
     senha: str
     ativo: Optional[bool]
+    remember_me: Optional[bool] = False
     admin: Optional[bool] = False
 
     class Config:
