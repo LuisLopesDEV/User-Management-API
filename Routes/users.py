@@ -32,7 +32,7 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
         session.commit()
     return {'mensagem': f'Usuário criado com sucesso! Email: {schema_user.email}'}
 
-@users_router.get('/users')
+@users_router.get('/allUsers')
 async def all_users(user: User = Depends(verify_token), session: Session = Depends(get_session)):
     if not user.admin:
         raise HTTPException(
@@ -42,8 +42,8 @@ async def all_users(user: User = Depends(verify_token), session: Session = Depen
     users = session.query(User).all()
     return {'users': users}
 
-@users_router.put('/users/{user_id}')
-async def chance_user(schema_user: UserSchema, user: User= Depends(verify_token), session: Session = Depends(get_session)):
+@users_router.put('/change_user/{user_id}')
+async def change_user(schema_user: UserSchema, user: User= Depends(verify_token), session: Session = Depends(get_session)):
     user = session.query(User).filter(User.id == user.id).first()
     if not user:
         raise HTTPException(status_code=400, detail='Usuario não cadastrado')
@@ -66,7 +66,7 @@ async def chance_user(schema_user: UserSchema, user: User= Depends(verify_token)
         "message": "Usuário atualizado com sucesso"
     }
 
-@users_router.delete('/users/{user_id}')
+@users_router.delete('/delete_user/{user_id}')
 async def delete_user(user: User= Depends(verify_token), session: Session = Depends(get_session)):
     user = session.query(User).filter(User.id == user.id).first()
     if not user:
