@@ -72,7 +72,7 @@ async def login(
         "expires_at": expires_at
     }
 
-@auth_router.post('/login-form')
+@auth_router.post('/login-form', include_in_schema=False)
 async def login_form(
         form_data: OAuth2PasswordRequestForm = Depends(),
         session: Session = Depends(get_session)):

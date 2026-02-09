@@ -41,3 +41,38 @@ async def all_users(user: User = Depends(verify_token), session: Session = Depen
         )
     users = session.query(User).all()
     return {'users': users}
+
+@users_router.put('/users/{user_id}')
+async def chance_user(schema_user: UserSchema, user: User= Depends(verify_token), session: Session = Depends(get_session)):
+    user = session.query(User).filter(User.id == user.id).first()
+    if not user:
+        raise HTTPException(status_code=400, detail='Usuario não cadastrado')
+    user.name = schema_user.name
+    user.email = schema_user.email
+    user.ativo = schema_user.ativo
+    user.remember = schema_user.remember_me
+    user.admin = schema_user.admin
+
+
+    # Atualiza senha somente se enviada
+    if schema_user.senha:
+        senha_bytes = schema_user.senha.encode('utf-8')
+        hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
+        user.senha = hash_senha
+
+    session.commit()
+    session.refresh(user)
+    return {
+        "message": "Usuário atualizado com sucesso"
+    }
+
+@users_router.delete('/users/{user_id}')
+async def delete_user(user: User= Depends(verify_token), session: Session = Depends(get_session)):
+    user = session.query(User).filter(User.id == user.id).first()
+    if not user:
+        raise HTTPException(status_code=400, detail='Usuario não cadastrado')
+    session.delete(user)
+    session.commit()
+    return {
+        "message": "Usuário deletado com sucesso"
+    }
