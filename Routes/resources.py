@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException
-from DataBase.models import db, User
+from Database.database import db, User
 from sqlalchemy.orm import sessionmaker, Session
 from jose import jwt, JWTError
-from main import SECRET_KEY, ALGORITHM, oauth2_schema
+#from main import SECRET_KEY, ALGORITHM, oauth2_schema
 
 def get_session():
     try:

@@ -2,10 +2,10 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 class UserSchema(BaseModel):
-    username: str
+    name: str
     email: str
-    password: str
-    active: Optional[bool]
+    senha: str
+    ativo: Optional[bool]
     admin: Optional[bool] = False
 
     class Config:

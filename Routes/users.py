@@ -9,15 +9,19 @@ from Routes.resources import get_session
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
-@auth_router.post('/signup')
-async def signup(schema_user: UserSchema, session: Session = Depends(get_session())):
-    new_user = User(
-        schema_user.username,
-        schema_user.email,
-        schema_user.password,
-        schema_user.active,
-        schema_user.admin
-    )
-    session.add(new_user)
-    session.commit()
-    return {'mensagem': f'Usuário criado com sucesso! Email: {usuario_schema.email}'}
+@users_router.post('/signup')
+async def signup(schema_user: UserSchema, session: Session = Depends(get_session)):
+    email = session.query(User).filter(User.email == schema_user.email).first()
+    if email:
+        return{'mensagem': 'email já cadastrado!'}
+    else:
+        new_user = User(
+            schema_user.name,
+            schema_user.email,
+            schema_user.senha,
+            schema_user.ativo,
+            schema_user.admin
+        )
+        session.add(new_user)
+        session.commit()
+    return {'mensagem': f'Usuário criado com sucesso! Email: {schema_user.email}'}
