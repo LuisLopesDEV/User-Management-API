@@ -4,43 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c4f6d53-7fd3-4e10-b068-5bc32e050755" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/App.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Back-End/.idea/User-Management-API.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Back-End/Database/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Back-End/Routes/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Back-End/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/User-Management-API.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routes/auth.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routes/requestes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routes/resources.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routes/users.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/script.py.mako" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/257528b3093d_initial_migration.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/2d631d6dea7b_new___init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/4d3619aab06f_token_create.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/53aaad7a8849_rename_expires_time_to_expires_at.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/7438d7d983d2_change_scruture.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/7ae1e97a482b_remember_me_added.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/d81275dae472_table_oders_added.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/e09112e556c3___init___token_create.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/schemas.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" />
-    </list>
+    <list default="true" id="6c4f6d53-7fd3-4e10-b068-5bc32e050755" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
