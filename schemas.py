@@ -19,7 +19,6 @@ class LoginSchema(BaseModel):
         from_attributes = True
 
 class OrderSchema(BaseModel):
-    user_id: int
     item: str
     quantity: int
     price: float

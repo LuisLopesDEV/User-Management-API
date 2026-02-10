@@ -1,1 +1,0 @@
-token_blacklist: set[str] = set()

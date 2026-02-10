@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 import bcrypt
 from sqlalchemy.orm import Session
-from main import SECRET_KEY, ACCESS_TOKEN_EXPIRES_MINUTES, ALGORITHM, oauth2_schema
+from main import SECRET_KEY, ALGORITHM, oauth2_schema
 from Database.database import User, Token
 from Routes.resources import get_session
 from schemas import LoginSchema
