@@ -1,9 +1,9 @@
 from fastapi import Depends, HTTPException
-from Database.database import db,Token
+from ..Database.database import db,Token
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime, timezone
 from jose import jwt, JWTError
-from config import oauth2_schema
+from ..config import oauth2_schema
 
 def get_session():
     try:

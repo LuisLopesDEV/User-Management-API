@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordRequestForm
-from Database.database import User, Order
-from schemas import OrderSchema
-from Routes.resources import get_session, verify_token
+from ..Database.database import User, Order
+from ..schemas import OrderSchema
+from ..Routes.resources import get_session, verify_token
 
 requestes_router = APIRouter(prefix='/requests', tags=['Requests'], dependencies=[Depends(verify_token)])
 

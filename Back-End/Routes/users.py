@@ -3,9 +3,9 @@ from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordRequestForm
 import bcrypt
-from Database.database import User
-from schemas import UserSchema, ChangeSchema, DeleteSchema
-from Routes.resources import get_session, verify_token
+from ..Database.database import User
+from ..schemas import UserSchema, ChangeSchema, DeleteSchema
+from ..Routes.resources import get_session, verify_token
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 

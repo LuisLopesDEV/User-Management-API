@@ -4,10 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0724caae-30f7-4613-b673-87ddef189a17" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+    <list default="true" id="6c4f6d53-7fd3-4e10-b068-5bc32e050755" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/App.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-End/.idea/User-Management-API.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-End/Database/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-End/Routes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-End/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/User-Management-API.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/database.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/auth.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/requestes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/resources.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/users.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/script.py.mako" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/257528b3093d_initial_migration.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/2d631d6dea7b_new___init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/4d3619aab06f_token_create.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/53aaad7a8849_rename_expires_time_to_expires_at.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/7438d7d983d2_change_scruture.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/7ae1e97a482b_remember_me_added.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/d81275dae472_table_oders_added.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/e09112e556c3___init___token_create.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/schemas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,10 +60,11 @@
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="39LJ10gV4YrX9L215QKuRpywDEe" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="39UR3Hx2CPyujWO2fbcvpD2V51K" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -39,27 +72,17 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.main.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+    "to.speed.mode.migration.done": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Luís\Documents\GitHub\App" />
-    </key>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -69,12 +92,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0724caae-30f7-4613-b673-87ddef189a17" name="Changes" comment="" />
-      <created>1770469200592</created>
+      <changelist id="6c4f6d53-7fd3-4e10-b068-5bc32e050755" name="Changes" comment="" />
+      <created>1770748461192</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1770469200592</updated>
-      <workItem from="1770469201707" duration="17000" />
+      <updated>1770748461192</updated>
     </task>
     <servers />
   </component>
@@ -82,8 +104,8 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alembic/env.py</url>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/Back-End/Routes/resources.py</url>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 import bcrypt
 from sqlalchemy.orm import Session
-from config import SECRET_KEY, ALGORITHM, oauth2_schema
-from Database.database import User, Token
-from Routes.resources import get_session
-from schemas import LoginSchema
+from ..config import SECRET_KEY, ALGORITHM, oauth2_schema
+from ..Database.database import User, Token
+from ..Routes.resources import get_session
+from ..schemas import LoginSchema
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordRequestForm
