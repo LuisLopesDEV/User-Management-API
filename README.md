@@ -105,4 +105,11 @@ uvicorn main:app --reload
 http://localhost:8000/docs
 ```
 
+---
 
+## 📌 Notes
+
+This project was developed for **study and portfolio purposes**,  
+simulating real freelance back-end requirements.
+
+It focuses on **security, clean architecture, and realistic business rules**.
