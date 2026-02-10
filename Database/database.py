@@ -1,13 +1,9 @@
-from datetime import datetime
-
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Boolean, Float
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy_utils.types import ChoiceType
-import bcrypt
 
 db = create_engine("mysql+pymysql://root:@localhost:3306/App")
 Base = declarative_base()
-
 
 class User(Base):
     __tablename__ = 'users'

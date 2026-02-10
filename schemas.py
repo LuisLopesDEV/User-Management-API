@@ -15,3 +15,13 @@ class UserSchema(BaseModel):
 class LoginSchema(BaseModel):
     email: str
     senha: str
+    class Config:
+        from_attributes = True
+
+class OrderSchema(BaseModel):
+    user_id: int
+    item: str
+    quantity: int
+    price: float
+    class Config:
+        from_attributes = True
