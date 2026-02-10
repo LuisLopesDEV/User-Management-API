@@ -36,15 +36,30 @@ async def list_orders(user: User = Depends(verify_token),session: Session = Depe
     if not user.admin:
         raise HTTPException(
             status_code=403,
-            detail='Você não tem autorização para fazer essa operação'
+            detail='Você não tem autorização para fazer essa operação!'
         )
     orders = session.query(Order).all()
     return {'orders': orders}
 
 @requestes_router.put('/update_order/{order_id}')
-async def update_order():
-    return {'message': 'Welcome!'}
+async def update_order(order_id:int, order_schema:OrderSchema, session: Session = Depends(get_session)):
+
+    order = session.query(Order).filter(Order.id == order_id).first()
+
+    order.user_id = order_schema.user_id
+    order.item = order_schema.item
+    order.quantity = order_schema.quantity
+    order.price = order_schema.price
+
+    session.commit()
+    session.refresh(order)
+    return {
+        "message": "Pedido atualizado com sucesso!"
+    }
 
 @requestes_router.delete('/delete_order/{order_id}')
-async def delete_order():
-    return {'message': 'Welcome!'}
+async def delete_order(order_id:int, session: Session = Depends(get_session)):
+    order = session.query(Order).filter(Order.id == order_id).first()
+    session.delete(order)
+    session.commit()
+    return {'message': 'Pedido deletado com sucesso!'}
