@@ -12,6 +12,17 @@ class UserSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class ChangeSchema(BaseModel):
+    nome: str
+    email: str
+    senha: str
+
+    class Config:
+        from_attributes = True
+
+class DeleteSchema(BaseModel):
+    confirm: bool = False
+
 class LoginSchema(BaseModel):
     email: str
     senha: str

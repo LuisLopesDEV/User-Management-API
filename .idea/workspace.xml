@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0724caae-30f7-4613-b673-87ddef189a17" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routes/requestes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/requestes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routes/resources.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/resources.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

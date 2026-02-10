@@ -1,4 +1,3 @@
-from urllib.request import Request
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError

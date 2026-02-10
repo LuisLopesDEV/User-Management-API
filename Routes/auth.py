@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 import bcrypt
 from sqlalchemy.orm import Session
-from main import SECRET_KEY, ALGORITHM, oauth2_schema
+from config import SECRET_KEY, ALGORITHM, oauth2_schema
 from Database.database import User, Token
 from Routes.resources import get_session
 from schemas import LoginSchema
@@ -101,7 +101,7 @@ def logout(token: str = Depends(oauth2_schema), db: Session = Depends(get_sessio
     token_db = db.query(Token).filter(Token.token == token, Token.is_active==True).first()
     print(token)
     if not token_db:
-        raise HTTPException(status_code=400, detail="Token já inválido")
+        raise HTTPException(status_code=401, detail="Token já inválido")
     token_db.is_active = False
     db.commit()
     return {'message': 'Logout realizado com sucesso'}
