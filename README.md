@@ -62,4 +62,47 @@ security, organization, and scalability.
 - SQLAlchemy ORM
 - HTTP status code best practices
 
+---
+
+## 📁 Project Structure
+
+```
+app/
+├── main.py          # Application entry point
+├── auth.py          # Authentication logic
+├── users.py         # User management
+├── requestes.py     # Orders resource
+├── resources.py     # Token validation and DB session
+├── schemas.py       # Data validation schemas
+├── security.py      # Security utilities
+└── database.py      # Database connection and models
+```
+
+---
+
+## ▶ How to Run
+
+1. Clone the repository  
+2. Create a MySQL database  
+3. Set environment variables:
+   - `SECRET_KEY`
+   - `ALGORITHM`
+   - `ACCESS_TOKEN_EXPIRES_MINUTES`
+   - Database credentials  
+
+4. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+5. Run the API:
+```bash
+uvicorn main:app --reload
+```
+
+6. Open API docs:
+```
+http://localhost:8000/docs
+```
+
 
