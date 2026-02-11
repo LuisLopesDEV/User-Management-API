@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Café Aurora — cafeteria moderna, aconchegante e funcional (SPA offline)." />
+  <title>Café Aurora</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="header" role="banner">
+    <div class="container header__inner">
+      <a class="brand" href="#/home" aria-label="Ir para Home">
+        <span class="brand__mark" aria-hidden="true">☕</span>
+        <span class="brand__name">Café Aurora</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <button class="nav__toggle btn btn--ghost" id="navToggle" aria-expanded="false" aria-controls="navMenu">
+          <span aria-hidden="true">☰</span>
+          <span class="sr-only">Abrir menu</span>
+        </button>
+
+        <div class="nav__menu" id="navMenu">
+          <a class="nav__link" href="#/home">Home</a>
+          <a class="nav__link" href="#/menu">Cardápio</a>
+          <a class="nav__link" href="#/sobre">Sobre</a>
+          <a class="nav__link" href="#/blog">Blog</a>
+          <a class="nav__link" href="#/reservas">Reservas</a>
+          <a class="nav__link" href="#/contato">Contato</a>
+        </div>
+      </nav>
+
+      <div class="header__actions">
+        <button class="btn btn--ghost" id="themeToggle" type="button" aria-label="Alternar tema">
+          <span class="theme-icon" aria-hidden="true">🌗</span>
+          <span class="sr-only">Alternar tema</span>
+        </button>
+
+        <button class="btn btn--ghost cart-btn" id="cartOpenBtn" type="button" aria-haspopup="dialog" aria-controls="cartDrawer">
+          <span aria-hidden="true">🛒</span>
+          <span class="sr-only">Abrir carrinho</span>
+          <span class="badge badge--pill" id="cartCount" aria-label="Itens no carrinho">0</span>
+        </button>
+
+        <div class="auth" id="authArea" aria-label="Área de autenticação">
+          <!-- preenchido via JS -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="main" tabindex="-1">
+    <div class="container">
+      <div id="routeLoading" class="route-loading" role="status" aria-live="polite" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Carregando...</span>
+      </div>
+
+      <div id="app" class="app" aria-live="polite">
+        <!-- páginas renderizadas aqui -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__grid">
+      <section>
+        <h2 class="footer__title">Café Aurora</h2>
+        <p class="muted" id="footerAddress">—</p>
+        <p class="muted" id="footerHours">—</p>
+        <p class="muted" id="footerContact">—</p>
+      </section>
+
+      <section>
+        <h2 class="footer__title">Links</h2>
+        <ul class="footer__links">
+          <li><a href="#/menu">Cardápio</a></li>
+          <li><a href="#/reservas">Reservas</a></li>
+          <li><a href="#/blog">Blog</a></li>
+          <li><a href="#/sobre">Sobre</a></li>
+          <li><a href="#/admin-local">Admin Local</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="footer__title">Newsletter</h2>
+        <form id="newsletterForm" class="form" novalidate>
+          <div class="field">
+            <label for="newsletterEmail">Email</label>
+            <input id="newsletterEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="voce@exemplo.com" required />
+            <div class="help" id="newsletterHelp">Receba novidades e promoções (fake 😉).</div>
+          </div>
+          <button class="btn btn--primary" type="submit">Inscrever</button>
+        </form>
+        <p class="muted small">Redes: <span aria-hidden="true">📸</span> AuroraCafe • <span aria-hidden="true">🐦</span> CafeAurora • <span aria-hidden="true">💬</span> AuroraZap</p>
+      </section>
+    </div>
+
+    <div class="container footer__bottom">
+      <p class="muted small">© <span id="year"></span> Café Aurora. Projeto offline (HTML/CSS/JS).</p>
+    </div>
+  </footer>
+
+  <!-- Drawer do Carrinho -->
+  <div class="drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+    <div class="drawer__backdrop" data-close="cart"></div>
+    <div class="drawer__panel" role="document" tabindex="-1">
+      <div class="drawer__header">
+        <h2 id="cartTitle">Seu carrinho</h2>
+        <button class="btn btn--ghost" type="button" data-close="cart" aria-label="Fechar carrinho">✕</button>
+      </div>
+
+      <div class="drawer__content">
+        <div id="cartItems" class="stack" aria-live="polite"></div>
+
+        <div class="cart-summary card">
+          <div class="row between">
+            <span class="muted">Subtotal</span>
+            <strong id="cartSubtotal">R$ 0,00</strong>
+          </div>
+
+          <div class="field field--inline">
+            <input id="serviceFee" type="checkbox" />
+            <label for="serviceFee">Adicionar taxa de serviço (10%)</label>
+          </div>
+
+          <div class="row between">
+            <span class="muted">Total</span>
+            <strong id="cartTotal">R$ 0,00</strong>
+          </div>
+
+          <button class="btn btn--primary btn--full" id="checkoutBtn" type="button">
+            Finalizar pedido
+          </button>
+
+          <p class="muted small">Pagamento: <span aria-hidden="true">💳</span> fake • pedido salvo no dispositivo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Checkout -->
+  <div class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-hidden="true">
+    <div class="modal__backdrop" data-close="checkout"></div>
+    <div class="modal__panel" role="document" tabindex="-1">
+      <div class="modal__header">
+        <h2 id="checkoutTitle">Checkout</h2>
+        <button class="btn btn--ghost" type="button" data-close="checkout" aria-label="Fechar checkout">✕</button>
+      </div>
+
+      <form id="checkoutForm" class="form" novalidate>
+        <div class="field">
+          <label for="checkoutMode">Como você quer receber?</label>
+          <select id="checkoutMode" name="mode" required>
+            <option value="">Selecione...</option>
+            <option value="retirar">Retirar</option>
+            <option value="local">Consumir no local</option>
+          </select>
+          <div class="error" data-error-for="checkoutMode"></div>
+        </div>
+
+        <div class="field">
+          <label for="checkoutNotes">Observações (opcional)</label>
+          <textarea id="checkoutNotes" name="notes" rows="3" placeholder="Ex.: sem açúcar, bem quente..."></textarea>
+        </div>
+
+        <div class="row between">
+          <span class="muted">Total</span>
+          <strong id="checkoutTotal">R$ 0,00</strong>
+        </div>
+
+        <button class="btn btn--primary btn--full" type="submit">Confirmar pedido</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-relevant="additions text"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
