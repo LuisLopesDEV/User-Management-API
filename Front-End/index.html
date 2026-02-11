@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meu Site (HTML/CSS/JS)</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a class="brand" href="#/">MinhaMarca</a>
+
+      <nav class="nav">
+        <a class="nav__link" href="#/">Home</a>
+        <a class="nav__link" href="#/items" data-protected="true">Itens</a>
+        <a class="nav__link" href="#/login" data-guest="true">Login</a>
+        <a class="nav__link" href="#/signup" data-guest="true">Signup</a>
+
+        <button class="btn btn--ghost" id="logoutBtn" style="display:none;">Sair</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main">
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <!-- ✅ FALLBACK: conteúdo estático já aparece -->
+    <section id="app">
+      <div class="grid grid--2">
+        <div class="card">
+          <h1 class="h1">Bem-vindo 👋</h1>
+          <p class="p">
+            Este site tem Home, Login, Signup e Itens (protegido) consumindo sua API.
+            Use o menu acima para navegar.
+          </p>
+          <div class="row">
+            <a class="btn btn--primary" href="#/items">Ver Itens (protegido)</a>
+            <a class="btn" href="#/login">Login</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 style="margin:0 0 8px;">Como funciona</h2>
+          <p class="p" style="margin:0;">
+            O JavaScript troca as telas dentro desta área (<code>#app</code>) quando você muda o hash da URL,
+            por exemplo <code>#/login</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <small>© <span id="year"></span> MinhaMarca. Todos os direitos reservados.</small>
+      <small><a href="#/">Política</a> • <a href="#/">Contato</a></small>
+    </div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
