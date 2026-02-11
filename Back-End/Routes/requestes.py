@@ -6,7 +6,7 @@ from ..Routes.resources import get_session, verify_token
 
 requestes_router = APIRouter(prefix='/requests', tags=['Requests'], dependencies=[Depends(verify_token)])
 
-@requestes_router.post('/create_order', response_model=OrderResponseSchemas)
+@requestes_router.post('', response_model=OrderResponseSchemas)
 async def create_order(order_schema: OrderSchema,user:User=Depends(verify_token), session: Session = Depends(get_session)):
 
     new_order= Order(
@@ -19,7 +19,7 @@ async def create_order(order_schema: OrderSchema,user:User=Depends(verify_token)
     session.commit()
     return new_order
 
-@requestes_router.get('/list_order/{order_id}')
+@requestes_router.get('')
 async def list_order(order_id: int,user: User = Depends(verify_token), session: Session = Depends(get_session)):
     order = session.query(Order).filter(Order.id == order_id).first()
 
@@ -32,7 +32,7 @@ async def list_order(order_id: int,user: User = Depends(verify_token), session: 
     print(order)
     return order
 
-@requestes_router.get('/list_all_orders')
+@requestes_router.get('/{order_id}')
 async def list_orders(user: User = Depends(verify_token),session: Session = Depends(get_session)):
     if not user.admin:
         raise HTTPException(
@@ -42,7 +42,7 @@ async def list_orders(user: User = Depends(verify_token),session: Session = Depe
     orders = session.query(Order).all()
     return orders
 
-@requestes_router.put('/update_order/{order_id}')
+@requestes_router.put('/{order_id}')
 async def update_order(order_id:int, order_schema:OrderSchema,user: User=Depends(verify_token) ,session: Session = Depends(get_session)):
     order = session.query(Order).filter(Order.id == order_id).first()
 
@@ -65,7 +65,7 @@ async def update_order(order_id:int, order_schema:OrderSchema,user: User=Depends
         "message": "Pedido atualizado com sucesso!"
     }
 
-@requestes_router.delete('/delete_order/{order_id}')
+@requestes_router.delete('/{order_id}')
 async def delete_order(order_id:int,user:User=Depends(verify_token), session: Session = Depends(get_session)):
     order = session.query(Order).filter(Order.id == order_id).first()
 
