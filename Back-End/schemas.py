@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, NonNegativeFloat, NonNegativeInt, EmailStr, Secret
 from typing import Optional, List
 
 class UserSchema(BaseModel):
     name: str
-    email: str
-    senha: str
+    email: EmailStr
+    senha: Secret[str]
     ativo: Optional[bool] = True
     remember_me: Optional[bool] = False
     admin: Optional[bool] = False
@@ -14,8 +14,8 @@ class UserSchema(BaseModel):
 
 class ChangeSchema(BaseModel):
     nome: str
-    email: str
-    senha: str
+    email: EmailStr
+    senha: Secret[str]
 
     class Config:
         from_attributes = True
@@ -24,15 +24,15 @@ class DeleteSchema(BaseModel):
     confirm: bool = False
 
 class LoginSchema(BaseModel):
-    email: str
-    senha: str
+    email: EmailStr
+    senha: Secret[str]
     class Config:
         from_attributes = True
 
 class OrderSchema(BaseModel):
     item: str
-    quantity: int
-    price: float
+    quantity: NonNegativeInt
+    price: NonNegativeFloat
     class Config:
         from_attributes = True
 
@@ -41,7 +41,7 @@ class OrderSchema(BaseModel):
 class UserResponseSchema(BaseModel):
     id: int
     name: str
-    email: str
+    email: EmailStr
 
     class Config:
         from_attributes = True
