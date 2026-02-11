@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Boolean, Float
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy_utils.types import ChoiceType
 
 db = create_engine("mysql+pymysql://root:@localhost:3306/App")
 Base = declarative_base()
@@ -47,6 +46,7 @@ class Token(Base):
 
 class Order(Base):
     __tablename__ = 'orders'
+    
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     item = Column(String(50), nullable=False)
