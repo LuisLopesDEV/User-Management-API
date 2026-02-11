@@ -21,7 +21,9 @@ async def create_order(order_schema: OrderSchema,user:User=Depends(verify_token)
 
 @requestes_router.get('')
 async def list_order(order_id: int, user: User = Depends(verify_token), session: Session = Depends(get_session)):
-    order = session.query(Order).filter(Order.id == order_id).first()
+    order = session.query(Order).filter(Order.id == order_id)\
+        .limit(1)\
+        .all()
 
     if not order:
         raise HTTPException(status_code=400, detail='Pedido não encontrado')
@@ -33,10 +35,13 @@ async def list_order(order_id: int, user: User = Depends(verify_token), session:
     return order
 
 @requestes_router.get('/{order_id}')
-async def list_orders(user: User = Depends(verify_token),session: Session = Depends(get_session)):
+async def list_orders(user: User = Depends(verify_token),session: Session = Depends(get_session), limit: int = 10 , offset: int = 0):
     if not user.admin:
         raise HTTPException(status_code=403, detail='Você não tem autorização para fazer essa operação!')
-    orders = session.query(Order).all()
+    orders = session.query(Order)\
+        .offset(offset)\
+        .limit(limit)\
+        .all()
     return orders
 
 @requestes_router.put('/{order_id}')

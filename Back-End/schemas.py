@@ -4,7 +4,7 @@ from typing import Optional, List
 class UserSchema(BaseModel):
     name: str
     email: EmailStr
-    senha: Secret[str]
+    senha: str
     ativo: Optional[bool] = True
     remember_me: Optional[bool] = False
     admin: Optional[bool] = False

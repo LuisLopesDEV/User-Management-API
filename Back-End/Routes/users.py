@@ -1,5 +1,5 @@
 import bcrypt
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from ..Database.database import User
 from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema
@@ -32,13 +32,15 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
     return new_user
 
 @users_router.get('', response_model=list[UserResponseSchema])
-async def all_users(user: User = Depends(verify_token), session: Session = Depends(get_session)):
+async def all_users(user: User = Depends(verify_token), session: Session = Depends(get_session), limit: int = Query(1, ge=1), offset: int = Query(0, ge=0)):
     if not user.admin:
         raise HTTPException(
             status_code=403,
             detail='Você não tem autorização para fazer essa operação'
         )
-    users = session.query(User).all()
+    users = session.query(User)\
+        .limit(limit)\
+        .all()
     return users
 
 @users_router.put('/{user_id}')
