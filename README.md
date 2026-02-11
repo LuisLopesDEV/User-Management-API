@@ -17,10 +17,11 @@ security, organization, and scalability.
 - bcrypt
 - Pydantic
 
-![Python](https://img.shields.io/badge/Python-3.14-blue)
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
-![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
+
 
 ---
 
