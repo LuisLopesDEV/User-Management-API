@@ -1,14 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException
 import bcrypt
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from jose import jwt
+from datetime import datetime, timedelta, timezone
 from ..config import SECRET_KEY, ALGORITHM, oauth2_schema
 from ..Database.database import User, Token
 from ..Routes.resources import get_session
 from ..schemas import LoginSchema
-from jose import jwt, JWTError
-from datetime import datetime, timedelta, timezone
-from fastapi.security import OAuth2PasswordRequestForm
-import os 
 
 auth_router = APIRouter(prefix="/auth", tags=['Auth'])
 
@@ -16,6 +15,7 @@ auth_router = APIRouter(prefix="/auth", tags=['Auth'])
 def authenticate_user(email, senha, session):
     user = session.query(User).filter(User.email == email).first()
     senha_bytes = senha.encode('utf-8')
+
     if not user:
         return False
     elif not bcrypt.checkpw(senha_bytes, user.senha.encode('utf-8')):
@@ -27,10 +27,7 @@ def create_token(user_id: int, remember: bool):
     expires = timedelta(days=30) if remember else timedelta(minutes=30)
     expires_at = datetime.now(timezone.utc) + expires
 
-    payload = {
-        "sub": str(user_id),
-        "exp": expires_at
-    }
+    payload = {"sub": str(user_id),"exp": expires_at}
 
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return token, expires_at
@@ -97,7 +94,7 @@ async def login_form(
 @auth_router.post('/logout')
 def logout(token: str = Depends(oauth2_schema), db: Session = Depends(get_session)):
     token_db = db.query(Token).filter(Token.token == token, Token.is_active==True).first()
-    print(token)
+
     if not token_db:
         raise HTTPException(status_code=401, detail="Token já inválido")
     token_db.is_active = False

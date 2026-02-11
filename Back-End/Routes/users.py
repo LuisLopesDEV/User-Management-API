@@ -1,12 +1,9 @@
+import bcrypt
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from jose import jwt, JWTError
-from fastapi.security import OAuth2PasswordRequestForm
-import bcrypt
 from ..Database.database import User
 from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema
 from ..Routes.resources import get_session, verify_token
-from typing import List
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
@@ -47,8 +44,10 @@ async def all_users(user: User = Depends(verify_token), session: Session = Depen
 @users_router.put('/{user_id}')
 async def change_user(schema_user: ChangeSchema, user: User= Depends(verify_token), session: Session = Depends(get_session)):
     user = session.query(User).filter(User.id == user.id).first()
+
     if not user:
         raise HTTPException(status_code=404, detail='Usuario não cadastrado')
+    
     user.name = schema_user.name
     user.email = schema_user.email
     senha_bytes = schema_user.senha.encode('utf-8')
@@ -57,9 +56,7 @@ async def change_user(schema_user: ChangeSchema, user: User= Depends(verify_toke
 
     session.commit()
     session.refresh(user)
-    return {
-        "message": "Usuário atualizado com sucesso"
-    }
+    return {"message": "Usuário atualizado com sucesso"}
 
 @users_router.delete('/{user_id}')
 async def delete_user(delete_schema: DeleteSchema, user: User= Depends(verify_token), session: Session = Depends(get_session)):
@@ -70,8 +67,6 @@ async def delete_user(delete_schema: DeleteSchema, user: User= Depends(verify_to
     if delete_schema.confirm == True:
         session.delete(user)
         session.commit()
-        return {
-            "message": "Usuário deletado com sucesso"
-        }
+        return {"message": "Usuário deletado com sucesso"}
     else:
         raise HTTPException(status_code=400, detail='Confirme para deletar o usuário!')

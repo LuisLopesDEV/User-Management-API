@@ -20,7 +20,7 @@ async def create_order(order_schema: OrderSchema,user:User=Depends(verify_token)
     return new_order
 
 @requestes_router.get('')
-async def list_order(order_id: int,user: User = Depends(verify_token), session: Session = Depends(get_session)):
+async def list_order(order_id: int, user: User = Depends(verify_token), session: Session = Depends(get_session)):
     order = session.query(Order).filter(Order.id == order_id).first()
 
     if not order:
@@ -29,16 +29,13 @@ async def list_order(order_id: int,user: User = Depends(verify_token), session: 
         raise HTTPException(
             status_code=403, detail='Você não tem autorização para fazer essa modificação!'
         )
-    print(order)
+
     return order
 
 @requestes_router.get('/{order_id}')
 async def list_orders(user: User = Depends(verify_token),session: Session = Depends(get_session)):
     if not user.admin:
-        raise HTTPException(
-            status_code=403,
-            detail='Você não tem autorização para fazer essa operação!'
-        )
+        raise HTTPException(status_code=403, detail='Você não tem autorização para fazer essa operação!')
     orders = session.query(Order).all()
     return orders
 
@@ -49,10 +46,7 @@ async def update_order(order_id:int, order_schema:OrderSchema,user: User=Depends
     if not order:
         raise HTTPException(status_code=400, detail='Pedido não encontrado')
     if not user.admin and order.user_id != user.id:
-        raise HTTPException(
-            status_code=403,
-            detail='Você não tem autorização para fazer essa operação!'
-        )
+        raise HTTPException(status_code=403, detail='Você não tem autorização para fazer essa operação!')
 
     order.user_id = order.user_id
     order.item = order_schema.item
@@ -71,12 +65,9 @@ async def delete_order(order_id:int,user:User=Depends(verify_token), session: Se
 
     if not order:
         raise HTTPException(status_code=400, detail='Pedido não encontrado')
-
     if not user.admin and order.user_id != user.id:
         raise HTTPException(
-            status_code=403,
-            detail='Você não tem autorização para fazer essa operação!'
-        )
+            status_code=403,detail='Você não tem autorização para fazer essa operação!')
 
     session.delete(order)
     session.commit()
