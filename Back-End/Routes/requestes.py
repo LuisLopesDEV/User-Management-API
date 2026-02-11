@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from jose import jwt, JWTError
-from fastapi.security import OAuth2PasswordRequestForm
 from ..Database.database import User, Order
-from ..schemas import OrderSchema
+from ..schemas import OrderSchema, OrderResponseSchemas
 from ..Routes.resources import get_session, verify_token
 
 requestes_router = APIRouter(prefix='/requests', tags=['Requests'], dependencies=[Depends(verify_token)])
 
-@requestes_router.post('/create_order')
+@requestes_router.post('/create_order', response_model=OrderResponseSchemas)
 async def create_order(order_schema: OrderSchema,user:User=Depends(verify_token), session: Session = Depends(get_session)):
 
     new_order= Order(
@@ -19,7 +17,7 @@ async def create_order(order_schema: OrderSchema,user:User=Depends(verify_token)
     )
     session.add(new_order)
     session.commit()
-    return {'mensagem': f'Pedido criado com sucesso! {Order.id}'}
+    return new_order
 
 @requestes_router.get('/list_order/{order_id}')
 async def list_order(order_id: int,user: User = Depends(verify_token), session: Session = Depends(get_session)):
@@ -31,10 +29,8 @@ async def list_order(order_id: int,user: User = Depends(verify_token), session: 
         raise HTTPException(
             status_code=403, detail='Você não tem autorização para fazer essa modificação!'
         )
-    return {
-        "id_pedido": order.id,
-        'order': order
-    }
+    print(order)
+    return order
 
 @requestes_router.get('/list_all_orders')
 async def list_orders(user: User = Depends(verify_token),session: Session = Depends(get_session)):
@@ -44,7 +40,7 @@ async def list_orders(user: User = Depends(verify_token),session: Session = Depe
             detail='Você não tem autorização para fazer essa operação!'
         )
     orders = session.query(Order).all()
-    return {'orders': orders}
+    return orders
 
 @requestes_router.put('/update_order/{order_id}')
 async def update_order(order_id:int, order_schema:OrderSchema,user: User=Depends(verify_token) ,session: Session = Depends(get_session)):

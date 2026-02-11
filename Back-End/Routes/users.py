@@ -4,33 +4,37 @@ from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordRequestForm
 import bcrypt
 from ..Database.database import User
-from ..schemas import UserSchema, ChangeSchema, DeleteSchema
+from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema
 from ..Routes.resources import get_session, verify_token
+from typing import List
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
-@users_router.post('/signup')
+@users_router.post('/signup', response_model=UserResponseSchema)
 async def signup(schema_user: UserSchema, session: Session = Depends(get_session)):
     email = session.query(User).filter(User.email == schema_user.email).first()
     senha_bytes = schema_user.senha.encode('utf-8')
     hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
 
     if email:
-        return{'mensagem': 'email já cadastrado!'}
+        raise HTTPException(
+            status_code=400,
+            detail="Email já cadastrado!"
+        )
     else:
         new_user = User(
             schema_user.name,
             schema_user.email,
-            hash_senha,
+            hash_senha.decode('utf-8'),
             schema_user.ativo,
             schema_user.remember_me,
             schema_user.admin
         )
         session.add(new_user)
         session.commit()
-    return {'mensagem': f'Usuário criado com sucesso! Email: {schema_user.email}'}
+    return new_user
 
-@users_router.get('/allUsers')
+@users_router.get('/allUsers', response_model=list[UserResponseSchema])
 async def all_users(user: User = Depends(verify_token), session: Session = Depends(get_session)):
     if not user.admin:
         raise HTTPException(
@@ -38,7 +42,7 @@ async def all_users(user: User = Depends(verify_token), session: Session = Depen
             detail='Você não tem autorização para fazer essa operação'
         )
     users = session.query(User).all()
-    return {'users': users}
+    return users
 
 @users_router.put('/change_user')
 async def change_user(schema_user: ChangeSchema, user: User= Depends(verify_token), session: Session = Depends(get_session)):
@@ -47,7 +51,6 @@ async def change_user(schema_user: ChangeSchema, user: User= Depends(verify_toke
         raise HTTPException(status_code=404, detail='Usuario não cadastrado')
     user.name = schema_user.name
     user.email = schema_user.email
-    user.remember = schema_user.remember_me
     senha_bytes = schema_user.senha.encode('utf-8')
     hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
     user.senha = hash_senha

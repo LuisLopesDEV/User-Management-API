@@ -8,6 +8,7 @@ from ..schemas import LoginSchema
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordRequestForm
+import os 
 
 auth_router = APIRouter(prefix="/auth", tags=['Auth'])
 
@@ -23,11 +24,7 @@ def authenticate_user(email, senha, session):
         return user
 
 def create_token(user_id: int, remember: bool):
-    if remember:
-        expires = timedelta(days=30)
-    else:
-        expires = timedelta(minutes=30)
-
+    expires = timedelta(days=30) if remember else timedelta(minutes=30)
     expires_at = datetime.now(timezone.utc) + expires
 
     payload = {
@@ -35,8 +32,9 @@ def create_token(user_id: int, remember: bool):
         "exp": expires_at
     }
 
-    token = jwt.encode(payload, SECRET_KEY, ALGORITHM)
+    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return token, expires_at
+
 
 @auth_router.post('/login')
 async def login(
