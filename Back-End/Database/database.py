@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Boolean, Float
 from sqlalchemy.orm import declarative_base, relationship
-from config import DATABASE_URL
+from ..config import DATABASE_URL
 db = create_engine(DATABASE_URL, pool_pre_ping=True)
 Base = declarative_base()
 
