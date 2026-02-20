@@ -1,14 +1,14 @@
 # User Management API
 
-REST API for user authentication and protected resource management,  
-with secure login, role-based access control, and JWT authentication.
+RESTful API for user authentication and protected resource management,  
+designed to simulate a real-world back-end system with focus on security, access control, and clean design principles.
 
-This project simulates a **real-world freelance back-end system**, focusing on  
-security, organization, and scalability.
+This project emphasizes practical back-end concerns such as authentication, authorization, resource ownership, and database integration.
 
 ---
 
 ## 🛠 Technologies
+
 - Python
 - FastAPI
 - SQLAlchemy
@@ -18,10 +18,9 @@ security, organization, and scalability.
 - Pydantic
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green)
+![FastAPI](https://img.shields.io/badge/FastAPI-Production_Ready-green)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
-![Status](https://img.shields.io/badge/Status-Stable-brightgreen)
-
+![Status](https://img.shields.io/badge/Status-Active_Development-orange)
 
 ---
 
@@ -29,88 +28,128 @@ security, organization, and scalability.
 
 ### 🔐 Authentication
 - Login with email and password
-- Secure password hashing with bcrypt
-- JWT token with expiration
-- Logout with token invalidation
-- Protected routes using dependency injection
+- Secure password hashing using bcrypt
+- JWT-based authentication
+- Token expiration control
+- Protected routes via dependency injection
 
 ### 👤 Users
 - User registration
-- Update own profile data
-- Secure account deletion with confirmation
-- List all users (admin only)
+- Profile update (authenticated users)
+- Secure account deletion
+- List users (admin only)
 
 ### 📦 Orders
 - Create orders (authenticated users)
 - View own orders
 - Update and delete own orders
-- Full access for admin users
+- Administrative access control
 
 ### 🔑 Access Control
 - Role-based authorization (user / admin)
 - Resource ownership validation
-- Proper HTTP status codes for errors
+- Consistent HTTP status codes
 
 ---
 
 ## 🧠 Concepts Applied
-- REST API design
+
+- RESTful API design
 - Separation of concerns
-- Secure authentication with JWT
+- JWT authentication flow
 - Password hashing (bcrypt)
-- Role-based access control (RBAC)
+- Role-Based Access Control (RBAC)
+- Resource ownership enforcement
 - Input validation with Pydantic
-- SQLAlchemy ORM
+- SQLAlchemy ORM usage
 - HTTP status code best practices
+
+---
+
+## 🔐 Authentication Design Notes
+
+This project currently uses JWT tokens combined with server-side persistence.
+
+During the front-end integration phase, token validation is handled through database verification (active / expiration).
+
+Middleware-based cryptographic validation (JWT signature and claims verification) is planned as part of the client integration refinement stage.
+
+This design reflects an incremental development workflow commonly used in real-world applications.
 
 ---
 
 ## 📁 Project Structure
 
-```
-app/
-├── main.py          # Application entry point
-├── auth.py          # Authentication logic
-├── users.py         # User management
-├── requestes.py     # Orders resource
-├── resources.py     # Token validation and DB session
-├── schemas.py       # Data validation schemas
-├── security.py      # Security utilities
-└── database.py      # Database connection and models
-```
+Back-End/
+
+- main.py  
+- config.py  
+
+Database/
+
+- database.py  
+- models.py  
+
+Routes/
+
+- auth.py  
+- users.py  
+- requestes.py  
+- resources.py  
+
+Root files:
+
+- schemas.py  
+- security.py  
 
 ---
 
 ## ▶ How to Run
 
-1. Clone the repository  
-2. Create a MySQL database  
-3. Set environment variables:
-   - `SECRET_KEY`
-   - `ALGORITHM`
-   - `ACCESS_TOKEN_EXPIRES_MINUTES`
-   - Database credentials  
+### 1) Clone repository
 
-4. Install dependencies:
-```bash
+git clone <repo_url>  
+cd User-Management-API
+
+---
+
+### 2) Configure environment variables
+
+Create a `.env` file:
+
+DATABASE_URL=mysql+pymysql://user:password@localhost:3306/App  
+SECRET_KEY=your_secret_key  
+ALGORITHM=HS256  
+ACCESS_TOKEN_EXPIRES_MINUTES=30  
+
+---
+
+### 3) Install dependencies
+
 pip install -r requirements.txt
-```
 
-5. Run the API:
-```bash
+---
+
+### 4) Run the application
+
 uvicorn Back-End.main:app --reload
-```
 
-6. Open API docs:
-```
+---
+
+### 5) Access API documentation
+
 http://localhost:8000/docs
-```
 
 ---
 
 ## 📌 Notes
 
-This project was developed for **study and portfolio purposes**,  
-simulating real freelance back-end requirements.
+This project was developed for study and portfolio purposes,  
+simulating realistic back-end scenarios including:
 
-It focuses on **security, clean architecture, and realistic business rules**.
+- Authentication flows
+- Authorization rules
+- Database-backed resources
+- Access restrictions
+
+The focus is on practical backend engineering concerns, not UI.
