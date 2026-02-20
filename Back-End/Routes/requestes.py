@@ -31,7 +31,7 @@ async def create_order(order_schema: OrderSchema, user: User = Depends(verify_to
     return new_order
 
 
-@requestes_router.get('')
+@requestes_router.get('order/{order_id}')
 async def list_order(order_id: int, user: User = Depends(verify_token), session: Session = Depends(get_session)):
     """
     Retorna um pedido específico com base no ID.
@@ -49,7 +49,7 @@ async def list_order(order_id: int, user: User = Depends(verify_token), session:
     """
     order = session.query(Order).filter(Order.id == order_id)\
         .limit(1)\
-        .all()
+        .first()
 
     if not order:
         raise HTTPException(status_code=400, detail='Pedido não encontrado')
@@ -63,7 +63,7 @@ async def list_order(order_id: int, user: User = Depends(verify_token), session:
     return order
 
 
-@requestes_router.get('/{order_id}')
+@requestes_router.get('orders')
 async def list_orders(user: User = Depends(verify_token), session: Session = Depends(get_session), limit: int = 10, offset: int = 0):
     """
     Lista pedidos do sistema (apenas administradores).

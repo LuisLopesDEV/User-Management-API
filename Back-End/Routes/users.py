@@ -41,7 +41,7 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
             schema_user.email,
             hash_senha.decode('utf-8'),
             schema_user.ativo,
-            schema_user.remember_me,
+            schema_user.remember,
             schema_user.admin
         )
         session.add(new_user)
@@ -111,12 +111,12 @@ async def change_user(
     if not user:
         raise HTTPException(status_code=404, detail='Usuario não cadastrado')
     
-    user.name = schema_user.name
+    user.name = schema_user.nome
     user.email = schema_user.email
 
     senha_bytes = schema_user.senha.encode('utf-8')
     hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
-    user.senha = hash_senha
+    user.senha = hash_senha.decode('utf-8')
 
     session.commit()
     session.refresh(user)

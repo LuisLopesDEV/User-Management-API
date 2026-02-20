@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Boolean, Float
 from sqlalchemy.orm import declarative_base, relationship
-
-db = create_engine("mysql+pymysql://root:@localhost:3306/App")
+from config import DATABASE_URL
+db = create_engine(DATABASE_URL, pool_pre_ping=True)
 Base = declarative_base()
 
 class User(Base):
