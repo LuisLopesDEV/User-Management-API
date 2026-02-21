@@ -46,7 +46,8 @@
           <span class="cart__count">0</span>
         </a>
         <a class="btn btn--ghost" href="#menu">Ver cardápio</a>
-        <a class="btn btn--primary" href="#checkout">Fazer pedido</a>
+        <!-- ALTERADO: era #checkout -->
+        <a class="btn btn--primary" href="#login">Fazer pedido</a>
       </div>
 
     </div>
@@ -77,7 +78,8 @@
 
           <div class="hero__actions">
             <a class="btn btn--primary" href="#menu">Explorar cardápio</a>
-            <a class="btn btn--green" href="#checkout">Pedir agora</a>
+            <!-- ALTERADO: era #checkout -->
+            <a class="btn btn--green" href="#login">Pedir agora</a>
           </div>
         </div>
 
@@ -111,6 +113,147 @@
       <span>© <span id="year"></span> Aurora Café</span>
     </div>
   </footer>
+
+  <!-- ===== MODAL LOGIN (SEM JS; abre com #login) ===== -->
+  <!-- LOGIN -->
+<section id="login" class="modal" aria-label="Entrar" role="dialog" aria-modal="true">
+  <a href="#topo" class="modal__overlay" aria-label="Fechar"></a>
+
+  <div class="modal__content" role="document">
+    <header class="modal__header">
+      <div class="modal__title">
+        <span class="modal__badge">Aurora</span>
+        <h3>Entrar</h3>
+      </div>
+      <a class="icon-btn" href="#topo" aria-label="Fechar">✕</a>
+    </header>
+
+    <div class="modal__tabs" role="tablist" aria-label="Alternar Login e Cadastro">
+      <a class="modal__tab modal__tab--active" href="#login" role="tab" aria-selected="true">Login</a>
+      <a class="modal__tab" href="#cadastro" role="tab" aria-selected="false">Cadastro</a>
+    </div>
+
+    <div class="modal__body">
+      <p class="muted">Entre para continuar seu pedido com entrega/retirada.</p>
+
+      <form class="modal__form">
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email" />
+        </div>
+
+        <div class="field">
+          <label for="login-senha">Senha</label>
+          <input id="login-senha" type="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+
+        <button class="btn btn--primary btn--block" type="button">Continuar</button>
+
+        <div class="modal__foot">
+          <span class="small">Ainda não tem conta?</span>
+          <a class="link-btn" href="#cadastro">Criar cadastro</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CADASTRO -->
+<section id="cadastro" class="modal" aria-label="Criar conta e endereço de entrega" role="dialog" aria-modal="true">
+  <a href="#topo" class="modal__overlay" aria-label="Fechar"></a>
+
+  <div class="modal__content" role="document">
+    <header class="modal__header">
+      <div class="modal__title">
+        <span class="modal__badge modal__badge--green">Delivery</span>
+        <h3>Criar conta</h3>
+      </div>
+      <a class="icon-btn" href="#topo" aria-label="Fechar">✕</a>
+    </header>
+
+    <div class="modal__tabs" role="tablist" aria-label="Alternar Login e Cadastro">
+      <a class="modal__tab" href="#login" role="tab" aria-selected="false">Login</a>
+      <a class="modal__tab modal__tab--active" href="#cadastro" role="tab" aria-selected="true">Cadastro</a>
+    </div>
+
+    <div class="modal__body">
+      <p class="muted">Crie sua conta e informe a localidade para calcular o delivery.</p>
+
+      <form class="modal__form">
+        <!-- Dados pessoais -->
+        <div class="modal__section">
+          <h4>Dados</h4>
+
+          <div class="field">
+            <label for="cad-nome">Nome</label>
+            <input id="cad-nome" type="text" placeholder="Seu nome" autocomplete="name" />
+          </div>
+
+          <div class="field">
+            <label for="cad-email">Email</label>
+            <input id="cad-email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email" />
+          </div>
+
+          <div class="field">
+            <label for="cad-senha">Senha</label>
+            <input id="cad-senha" type="password" placeholder="Crie uma senha" autocomplete="new-password" />
+          </div>
+        </div>
+
+        <!-- Localidade / Endereço -->
+        <div class="modal__section">
+          <h4>Localidade (Delivery)</h4>
+
+          <div class="modal__grid">
+            <div class="field">
+              <label for="cad-cep">CEP</label>
+              <input id="cad-cep" type="text" inputmode="numeric" placeholder="00000-000" autocomplete="postal-code" />
+            </div>
+
+            <div class="field">
+              <label for="cad-numero">Número</label>
+              <input id="cad-numero" type="text" inputmode="numeric" placeholder="123" autocomplete="address-line2" />
+            </div>
+          </div>
+
+          <div class="modal__grid">
+            <div class="field">
+              <label for="cad-cidade">Cidade</label>
+              <input id="cad-cidade" type="text" placeholder="Sua cidade" autocomplete="address-level2" />
+            </div>
+
+            <div class="field">
+              <label for="cad-bairro">Bairro</label>
+              <input id="cad-bairro" type="text" placeholder="Seu bairro" autocomplete="address-level3" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="cad-rua">Rua / Avenida</label>
+            <input id="cad-rua" type="text" placeholder="Rua, Av..." autocomplete="street-address" />
+          </div>
+
+          <div class="field">
+            <label for="cad-comp">Complemento (opcional)</label>
+            <input id="cad-comp" type="text" placeholder="Apto, bloco, casa..." autocomplete="address-line2" />
+          </div>
+
+          <div class="modal__hint">
+            <span class="dot dot--gold"></span>
+            <span class="small">Usamos seu endereço para estimar taxa e tempo de entrega.</span>
+          </div>
+        </div>
+
+        <button class="btn btn--green btn--block" type="button">Criar conta</button>
+
+        <div class="modal__foot">
+          <span class="small">Já tem conta?</span>
+          <a class="link-btn" href="#login">Voltar para login</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
   <!-- ORDEM CORRETA -->
   <script src="js/menuData.js"></script>
