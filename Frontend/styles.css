@@ -933,7 +933,7 @@ input:focus{
 }
 
 /* ===========================
-   MODAL LOGIN (POP-UP FLUTUANTE)
+   MODAL FLUTUANTE (LOGIN / CADASTRO)
    =========================== */
 
 .modal{
@@ -945,42 +945,45 @@ input:focus{
 
   opacity: 0;
   pointer-events: none;
-  transition: opacity .18s ease;
+  transition: opacity .2s ease;
 
   z-index: 200;
 }
 
-/* Abre quando a âncora #login estiver ativa */
 .modal:target{
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Fundo escuro */
+/* Overlay escuro */
 .modal__overlay{
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,.55);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
 }
 
-/* Caixa do modal */
+/* Caixa */
 .modal__content{
   position: relative;
-  width: min(420px, calc(100% - 32px));
-  border-radius: 18px;
+  width: min(520px, calc(100% - 28px));
+  max-height: 85dvh;
 
   background: var(--surface);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
 
-  animation: modalPop .18s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  animation: modalEnter .22s ease;
 }
 
-/* Animação suave */
-@keyframes modalPop{
+@keyframes modalEnter{
   from{
-    transform: translateY(6px) scale(.98);
+    transform: translateY(10px) scale(.98);
     opacity: .6;
   }
   to{
@@ -989,33 +992,201 @@ input:focus{
   }
 }
 
+/* Header */
 .modal__header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  padding: 16px 18px;
 
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(
+    180deg,
+    rgba(214,192,137,.12),
+    rgba(0,0,0,.12)
+  );
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.modal__title{
+  display:flex;
+  align-items:center;
+  gap: 10px;
 }
 
 .modal__header h3{
   margin: 0;
   font-family: var(--font-serif);
+  letter-spacing: .3px;
 }
 
+/* Badge */
+.modal__badge{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .3px;
+
+  background: rgba(214,192,137,.18);
+  border: 1px solid rgba(214,192,137,.28);
+  color: var(--text);
+}
+
+.modal__badge--green{
+  background: rgba(71,82,70,.22);
+  border-color: rgba(71,82,70,.35);
+}
+
+/* Tabs */
+.modal__tabs{
+  display:flex;
+  gap: 6px;
+  padding: 10px;
+  background: rgba(0,0,0,.18);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.modal__tab{
+  flex: 1;
+  text-align:center;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: .9rem;
+  color: var(--muted);
+
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all .15s ease;
+}
+
+.modal__tab:hover{
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+}
+
+.modal__tab--active{
+  background: rgba(214,192,137,.14);
+  border-color: rgba(214,192,137,.22);
+  color: var(--text);
+}
+
+/* Body */
 .modal__body{
-  padding: 16px;
+  padding: 18px;
+  overflow: auto;
 }
 
-/* Inputs mais “clean” dentro do modal */
+/* Sections */
+.modal__section{
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+}
+
+.modal__section h4{
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+}
+
+/* Grid */
+.modal__grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Inputs dentro do modal */
 .modal input{
-  background: rgba(0,0,0,.25);
+  background: rgba(0,0,0,.22);
 }
 
-/* Mobile refinement */
-@media (max-width: 480px){
+/* Rodapé */
+.modal__foot{
+  margin-top: 10px;
+  display:flex;
+  justify-content:center;
+  gap: 6px;
+  align-items:center;
+}
+
+.modal__hint{
+  margin-top: 10px;
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  color: var(--muted);
+}
+
+/* Mobile */
+@media (max-width: 560px){
   .modal__content{
-    width: calc(100% - 24px);
-    border-radius: 16px;
+    width: calc(100% - 16px);
+    border-radius: 18px;
+    max-height: 88dvh;
+  }
+
+  .modal__body{
+    padding: 14px;
+  }
+
+  .modal__grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================
+   MODAL REFINEMENT (largura + X + scroll invisível)
+   =========================== */
+
+/* Caixa mais larga */
+.modal__content{
+  width: min(1000px, calc(100% - 32px));   /* ← mais espaço lateral */
+  max-height: 85dvh;
+}
+
+/* Header refinado */
+.modal__header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 16px 18px;
+}
+
+/* Botão X perfeitamente centralizado */
+.modal .icon-btn{
+  display: grid;
+  place-items: center;     /* CENTRALIZA vertical + horizontal */
+  padding: 0;
+  line-height: 1;
+  font-size: 18px;
+}
+
+/* Área com scroll mas sem barra visível */
+.modal__body{
+  padding: 18px;
+  overflow: auto;
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE / Edge antigo */
+  -ms-overflow-style: none;
+}
+
+/* Chrome / Safari / Edge */
+.modal__body::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
+
+/* Mobile continua confortável */
+@media (max-width: 560px){
+  .modal__content{
+    width: calc(100% - 18px);
   }
 }
