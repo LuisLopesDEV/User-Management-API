@@ -933,42 +933,25 @@ input:focus{
 }
 
 /* ===========================
-   MOBILE 100% RESPONSIVO
-   (somente overrides)
+   RESPONSIVO COMPLETO (MOBILE-FIRST OVERRIDES)
+   Header: logo + carrinho
+   Main: botões menores (não gigantes)
    Cole no FINAL do styles.css
    =========================== */
 
-@media (max-width: 720px){
-  /* Header: evita overflow e deixa botões usáveis */
-  .header__inner{
-    flex-wrap: wrap;
-    gap: 12px;
-  }
+/* Tablets e abaixo */
+@media (max-width: 980px){
+  /* você já tinha isso, mas garantimos consistência */
+  .nav{ display:none; }
+}
 
-  .brand{
-    flex: 1 1 auto;
-    min-width: 180px;
-  }
+/* Mobile */
+@media (max-width: 560px){
 
-  .header__cta{
-    width: 100%;
-    flex: 1 1 100%;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-  }
+  /* previne scroll horizontal acidental */
+  html, body{ overflow-x: hidden; }
 
-  /* 3 botões: carrinho menor + dois botões mais “tocáveis” */
-  .header__cta .cart{
-    flex: 0 0 auto;
-  }
-  .header__cta .btn--ghost,
-  .header__cta .btn--primary{
-    flex: 1 1 calc(50% - 5px);
-    justify-content: center;
-  }
-
-  /* Topbar: não “quebra feio” */
+  /* ===== TOPBAR ===== */
   .topbar__inner{
     flex-wrap: wrap;
     gap: 8px;
@@ -976,65 +959,92 @@ input:focus{
   .topbar__inner > span{
     width: 100%;
   }
-}
+  .topbar__actions{ display:none; }
 
-@media (max-width: 560px){
-  /* Hero: menos altura e botões em coluna */
+  /* ===== HEADER: logo + carrinho apenas ===== */
+  .header__inner{
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  /* mantém a logo */
+  .header .brand{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 auto;
+    min-width: 160px;
+  }
+
+  /* some com os botões do header, fica só o carrinho */
+  .header__cta{
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 0 0 auto;
+  }
+  .header__cta .btn:not(.cart){
+    display: none !important;
+  }
+
+  /* carrinho compacto */
+  .header__cta .cart{
+    width: auto !important;
+    padding: 10px 14px !important;
+    border-radius: 14px !important;
+  }
+
+  /* ===== HERO ===== */
   .hero{
     padding: 34px 0 24px;
   }
-
+  .hero__grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .hero h1{
+    font-size: clamp(1.9rem, 7vw, 2.4rem);
+    line-height: 1.08;
+  }
+  .hero__sub{
+    font-size: 1rem;
+  }
   .hero__media{
-    min-height: 240px; /* era bem alto no mobile */
+    min-height: 240px;
   }
 
+  /* botões do main/hero menores e elegantes */
+  main .btn{
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: .95rem;
+  }
+
+  /* hero actions não vira “botão gigante 100%” */
   .hero__actions{
-    width: 100%;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
   }
   .hero__actions .btn{
-    width: 100%;
+    width: auto;
+    flex: 0 0 auto;
   }
 
-  /* Cards: imagem menor para caber melhor */
+  /* ===== GRID DO MENU ===== */
+  .grid--3{
+    grid-template-columns: 1fr;
+  }
   .card__img{
     height: 150px;
   }
 
-  /* Drawer do carrinho: ocupa a tela inteira no celular */
+  /* ===== CARRINHO (drawer) ===== */
   .cart-drawer{
     width: 100vw;
     max-width: 100vw;
   }
 }
-
-@media (max-width: 420px){
-  /* Header: botões ficam 100% (mais confortável no dedo) */
-  .header__cta{
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .header__cta .cart,
-  .header__cta .btn--ghost,
-  .header__cta .btn--primary{
-    width: 100%;
-    flex: 1 1 auto;
-  }
-
-  /* Itens do carrinho: empilha conteúdo + botão remover */
-  .cart-item{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .cart-item .btn--danger{
-    width: 100%;
-  }
-}
-
-/* Extra: previne qualquer scroll horizontal acidental no mobile */
-@media (max-width: 560px){
-  html, body{
-    overflow-x: hidden;
-  }
