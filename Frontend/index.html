@@ -254,6 +254,58 @@
     </div>
   </div>
 </section>
+<!-- ===== MODAL PRODUTO (abre via JS) ===== -->
+<section id="produtoModal" class="pmodal" aria-label="Detalhes do produto" role="dialog" aria-modal="true">
+  <!-- overlay: no JS você fecha removendo a classe is-open -->
+  <button class="pmodal__overlay" type="button" aria-label="Fechar"></button>
+
+  <div class="pmodal__content" role="document">
+    <header class="pmodal__header">
+      <div class="pmodal__title">
+        <span class="pmodal__badge">Personalize</span>
+        <h3 id="pmodal-name">Nome do produto</h3>
+      </div>
+
+      <button class="icon-btn pmodal__close" type="button" aria-label="Fechar">✕</button>
+    </header>
+
+    <div class="pmodal__body">
+      <div class="pmodal__grid">
+        <div class="pmodal__media">
+          <img id="pmodal-img" src="" alt="" />
+        </div>
+
+        <div class="pmodal__info">
+          <p id="pmodal-desc" class="muted">Descrição do produto</p>
+
+          <div class="pmodal__priceRow">
+            <span class="pmodal__price" id="pmodal-price">R$ 0,00</span>
+            <span class="badge badge--green">Delivery</span>
+          </div>
+
+          <!-- FUTURO: tamanhos/adicionais entram aqui -->
+          <div class="pmodal__slot">
+            <div class="pmodal__slotHead">
+              <h4>Opções</h4>
+              <span class="small">Em breve: tamanhos e adicionais</span>
+            </div>
+
+            <div class="pmodal__empty">
+              <span class="dot dot--gold"></span>
+              <span class="small">Este item ainda não tem opções.</span>
+            </div>
+          </div>
+
+          <div class="pmodal__actions">
+            <button class="btn btn--ghost" type="button">Cancelar</button>
+            <button class="btn btn--green" type="button">Adicionar ao carrinho</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- ORDEM CORRETA -->
   <script src="js/menuData.js"></script>

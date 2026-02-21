@@ -7,6 +7,13 @@ const cartButton = document.querySelector('.cart');
 const cartDrawer = document.querySelector('.cart-drawer');
 const closeButton = document.querySelector('.icon-btn');
 
+const pmodal = document.querySelector('#produtoModal');
+
+const pmodalImg = document.querySelector('#pmodal-img');
+const pmodalName = document.querySelector('#pmodal-name');
+const pmodalPrice = document.querySelector('#pmodal-price');
+const pmodalDescription = document.querySelector('#pmodal-desc');
+
 const menuContainer = document.getElementById("menu-container");
 
 const cart = {};
@@ -47,9 +54,30 @@ renderMenu();
 renderCart();
 
 const addButtons = document.querySelectorAll('.addButton');
-addButtons.forEach(button => {
-    button.addEventListener('click', addCart);
+
+addButtons.forEach((button) => {
+  button.addEventListener('click', (e) => {
+    const produtoid = e.currentTarget.getAttribute('data-product'); // ou button.getAttribute(...)
+    
+    if (pmodal.classList.contains('is-open')) {
+      pmodal.classList.remove('is-open');
+      return;
+    }
+
+    pmodal.classList.add('is-open');
+    carregarProduto(produtoid);
+  });
 });
+
+function carregarProduto(produtoid) {
+  const produto = menuData.find(p => String(p.id) === String(produtoid));
+  if (!produto) return;
+  pmodalImg.src = produto.img;
+  pmodalName.textContent = produto.name;
+  pmodalPrice.textContent = `R$ ${produto.price}`;
+  pmodalDescription.textContent = produto.description;  
+}
+
 
 function addCart() {
   const produtoid = this.getAttribute('data-product');
