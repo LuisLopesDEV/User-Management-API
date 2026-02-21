@@ -122,8 +122,6 @@ function carregarProduto(produtoid) {
 // Carrinho (ações)
 // ==============================
 function addCart() {
-  const produtoid = this.getAttribute('data-product');
-
   cart[produtoid] = (cart[produtoid] || 0) + 1;
 
   // contador total:
@@ -164,9 +162,11 @@ renderCart();
 
 const addButtons = document.querySelectorAll('.addButton');
 
+let produtoid = null;
+
 addButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
-    const produtoid = e.currentTarget.getAttribute('data-product'); // ou button.getAttribute(...)
+    produtoid = e.currentTarget.getAttribute('data-product');
 
     if (pmodal.classList.contains('is-open')) {
       pmodal.classList.remove('is-open');
@@ -181,6 +181,7 @@ addButtons.forEach((button) => {
 // ==============================
 // Eventos do modal
 // ==============================
+
 closePmodalButton.addEventListener('click', () => {
   pmodal.classList.remove('is-open');
 });
@@ -189,9 +190,16 @@ cancelCartButton.addEventListener('click', () => {
   pmodal.classList.remove('is-open');
 });
 
+addCartButton.addEventListener('click', (e) => {
+  addCart.call(addCartButton);
+  pmodal.classList.remove('is-open');
+});
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') pmodal.classList.remove('is-open');
 });
+
+
 
 // ==============================
 // Eventos do carrinho
