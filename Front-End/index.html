@@ -11,8 +11,9 @@
 
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <!-- Topbar -->
+
   <div class="topbar">
     <div class="container topbar__inner">
       <span>📍 Retirada & Delivery • Aberto hoje 08:00–20:00</span>
@@ -23,551 +24,97 @@
     </div>
   </div>
 
-  <!-- Header -->
   <header class="header" id="topo">
     <div class="container header__inner">
-      <a class="brand" href="#topo" aria-label="Aurora Café">
+
+      <a class="brand" href="#topo">
         <span class="brand__mark">☕</span>
         <span class="brand__text">
           <strong>Aurora</strong><em>Café</em>
         </span>
       </a>
 
-      <nav class="nav" aria-label="Navegação principal">
+      <nav class="nav">
         <a href="#destaques">Destaques</a>
         <a href="#como-funciona">Retirada/Delivery</a>
         <a href="#depoimentos">Avaliações</a>
       </nav>
 
       <div class="header__cta">
+        <a class="btn btn--green cart" href="#">
+          <span class="cart__icon">🛒</span>
+          <span class="cart__count">0</span>
+        </a>
         <a class="btn btn--ghost" href="#menu">Ver cardápio</a>
         <a class="btn btn--primary" href="#checkout">Fazer pedido</a>
-        <a class="btn btn--green cart" href="#cart">🛒</a>
       </div>
+
     </div>
   </header>
 
+  <div class="cart-overlay"></div>
+
+  <aside class="cart-drawer" id="cartDrawer">
+    <header class="cart-drawer__header">
+      <h3>Seu carrinho</h3>
+      <button class="icon-btn">✕</button>
+    </header>
+    <div class="cart-drawer__body" id="cartBody">
+        <!-- ITENS DO CARRINHO VÃO AQUI -->
+    </div>
+  </aside>
+
   <main>
-    <!-- Hero -->
+
     <section class="hero">
       <div class="container hero__grid">
         <div class="hero__content">
           <p class="pill">Clássico • Moderno • Artesanal</p>
           <h1>Uma cafeteria que vai do básico ao premium — sem perder a alma.</h1>
           <p class="hero__sub">
-            Cafés clássicos, especiais chiques e comidas tradicionais. Peça para
-            <strong>retirar</strong> ou receber por <strong>delivery</strong>.
+            Cafés clássicos, especiais chiques e comidas tradicionais.
           </p>
 
           <div class="hero__actions">
             <a class="btn btn--primary" href="#menu">Explorar cardápio</a>
             <a class="btn btn--green" href="#checkout">Pedir agora</a>
           </div>
-
-          <div class="hero__stats">
-            <div class="stat">
-              <strong>15–25 min</strong>
-              <span>preparo médio</span>
-            </div>
-            <div class="stat">
-              <strong>Combos</strong>
-              <span>clássico + premium</span>
-            </div>
-            <div class="stat">
-              <strong>Retirada</strong>
-              <span>ou delivery</span>
-            </div>
-          </div>
-
-          <div class="hero__note">
-            <span class="dot"></span>
-            <span>Experimente o <strong>Latte Pistache</strong> — assinatura premium da casa.</span>
-          </div>
         </div>
 
-        <div class="hero__media" aria-hidden="true">
-          <img
-            class="hero__img"
-            src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=80"
-            alt=""
-          />
-          <div class="hero__overlay"></div>
-
-          <div class="media-card">
-            <div class="media-card__row">
-              <span class="badge badge--gold">Destaque</span>
-              <span class="badge badge--green">Novo</span>
-            </div>
-            <div class="media-card__title">Latte Caramelo Salgado</div>
-            <div class="media-card__meta">Cremoso • Aroma intenso • Equilíbrio</div>
-            <div class="media-card__price">a partir de <strong>R$ 18</strong></div>
-          </div>
+        <div class="hero__media">
+          <img class="hero__img"
+               src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=80" />
         </div>
       </div>
     </section>
 
-    <!-- Categories -->
-    <section class="section">
-      <div class="container">
-        <div class="section__head">
-          <h2>Escolha por categoria</h2>
-          <p>Clássicos para todo mundo e especiais pra quem curte algo diferente.</p>
-        </div>
-
-        <div class="grid grid--4">
-          <a class="cat cat--brown" href="#menu">
-            <span class="cat__icon">☕</span>
-            <strong>Cafés clássicos</strong>
-            <span>espresso, coado, cappuccino</span>
-          </a>
-          <a class="cat cat--green" href="#menu">
-            <span class="cat__icon">✨</span>
-            <strong>Especiais</strong>
-            <span>cold brew, iced, autorais</span>
-          </a>
-          <a class="cat cat--gold" href="#menu">
-            <span class="cat__icon">🥐</span>
-            <strong>Comidas</strong>
-            <span>pão de queijo, salgados</span>
-          </a>
-          <a class="cat cat--brown" href="#menu">
-            <span class="cat__icon">🍰</span>
-            <strong>Doces</strong>
-            <span>brownie, cheesecake, cookies</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Menu -->
+    <!-- CARDÁPIO (APENAS CONTAINER) -->
     <section class="section section--soft" id="menu">
       <div class="container">
-        <div class="section__head section__head--row">
-          <div>
-            <h2>Cardápio</h2>
-            <p>Com fotos, variações e extras — pronto pra você plugar o JS depois.</p>
-          </div>
 
-          <div class="menu-tools">
-            <div class="search">
-              <input type="search" placeholder="Buscar no cardápio (ex: cappuccino)" aria-label="Buscar no cardápio" />
-              <span class="search__icon">⌕</span>
-            </div>
-            <div class="chips" role="tablist" aria-label="Filtros do cardápio">
-              <button class="chip chip--active" type="button">Todos</button>
-              <button class="chip" type="button">Clássicos</button>
-              <button class="chip" type="button">Especiais</button>
-              <button class="chip" type="button">Comidas</button>
-              <button class="chip" type="button">Doces</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid--3">
-          <!-- Cards com fotos -->
-          <article class="card">
-            <div class="card__img">
-              <img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?auto=format&fit=crop&w=1200&q=80" alt="Capuccino" />
-              <div class="card__imgOverlay"></div>
-              <span class="badge badge--gold card__badge">Clássico</span>
-            </div>
-            <div class="card__body">
-              <div class="card__top">
-                <h3>Capuccino Tradicional</h3>
-                <span class="price">a partir de R$ 12</span>
-              </div>
-              <p class="muted">Espresso, leite vaporizado e espuma. Tamanhos P/M/G.</p>
-              <div class="tags">
-                <span class="tag">P/M/G</span>
-                <span class="tag tag--green">Leite vegetal</span>
-              </div>
-              <div class="card__actions">
-                <a class="btn btn--sm btn--ghost" href="#checkout">Detalhes</a>
-                <button class="btn btn--sm btn--primary" type="button">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__img">
-              <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1200&q=80" alt="Cold brew" />
-              <div class="card__imgOverlay"></div>
-              <span class="badge badge--green card__badge">Especial</span>
-            </div>
-            <div class="card__body">
-              <div class="card__top">
-                <h3>Cold Brew Premium</h3>
-                <span class="price">a partir de R$ 16</span>
-              </div>
-              <p class="muted">Extração lenta, suave e encorpado. Perfeito gelado.</p>
-              <div class="tags">
-                <span class="tag tag--green">Gelado</span>
-                <span class="tag">Sem pressa</span>
-              </div>
-              <div class="card__actions">
-                <a class="btn btn--sm btn--ghost" href="#checkout">Detalhes</a>
-                <button class="btn btn--sm btn--primary" type="button">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__img">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMAAFz--8X3_2BGQvbIbWaYZKE-YXomWQT9Q&s" alt="Pão de queijo" />
-              <div class="card__imgOverlay"></div>
-              <span class="badge badge--gold card__badge">Comida</span>
-            </div>
-            <div class="card__body">
-              <div class="card__top">
-                <h3>Pão de Queijo</h3>
-                <span class="price">R$ 8</span>
-              </div>
-              <p class="muted">Crocante por fora, macio por dentro. Clássico brasileiro.</p>
-              <div class="tags">
-                <span class="tag">Quentinho</span>
-                <span class="tag">Combina</span>
-              </div>
-              <div class="card__actions">
-                <a class="btn btn--sm btn--ghost" href="#checkout">Detalhes</a>
-                <button class="btn btn--sm btn--primary" type="button">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__img">
-              <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=1200&q=80" alt="Cheesecake" />
-              <div class="card__imgOverlay"></div>
-              <span class="badge badge--gold card__badge">Doce</span>
-            </div>
-            <div class="card__body">
-              <div class="card__top">
-                <h3>Cheesecake</h3>
-                <span class="price">R$ 14</span>
-              </div>
-              <p class="muted">Base crocante e creme leve. Calda opcional.</p>
-              <div class="tags">
-                <span class="tag">Premium</span>
-                <span class="tag tag--green">Calda</span>
-              </div>
-              <div class="card__actions">
-                <a class="btn btn--sm btn--ghost" href="#checkout">Detalhes</a>
-                <button class="btn btn--sm btn--primary" type="button">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__img">
-              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=1200&q=80" alt="Latte especial" />
-              <div class="card__imgOverlay"></div>
-              <span class="badge badge--green card__badge">Autoral</span>
-            </div>
-            <div class="card__body">
-              <div class="card__top">
-                <h3>Latte Pistache</h3>
-                <span class="price">a partir de R$ 18</span>
-              </div>
-              <p class="muted">Cremoso, aromático e sofisticado. Queridinho premium.</p>
-              <div class="tags">
-                <span class="tag tag--green">Especial</span>
-                <span class="tag">P/M/G</span>
-              </div>
-              <div class="card__actions">
-                <a class="btn btn--sm btn--ghost" href="#checkout">Detalhes</a>
-                <button class="btn btn--sm btn--primary" type="button">Adicionar</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card__img">
-              <img src="https://sabores-new.s3.amazonaws.com/public/2025/01/COXINHA-scaled.jpg" alt="Salgado" />
-              <div class="card__imgOverlay"></div>
-              <span class="badge badge--gold card__badge">Comida</span>
-            </div>
-            <div class="card__body">
-              <div class="card__top">
-                <h3>Coxinha Tradicional</h3>
-                <span class="price">R$ 10</span>
-              </div>
-              <p class="muted">Salgado clássico pra acompanhar um cafezinho.</p>
-              <div class="tags">
-                <span class="tag">Clássico</span>
-                <span class="tag tag--green">Combo</span>
-              </div>
-              <div class="card__actions">
-                <a class="btn btn--sm btn--ghost" href="#checkout">Detalhes</a>
-                <button class="btn btn--sm btn--primary" type="button">Adicionar</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Highlights -->
-    <section class="section" id="destaques">
-      <div class="container">
         <div class="section__head">
-          <h2>Destaques da semana</h2>
-          <p>Combos pra girar pedido e especiais pra elevar a marca.</p>
+          <h2>Cardápio</h2>
+          <p>Escolha seu café ou comida favorita</p>
         </div>
 
-        <div class="grid grid--2">
-          <div class="highlight">
-            <div class="highlight__content">
-              <p class="pill pill--soft">Combo clássico</p>
-              <h3>Capuccino + Pão de queijo</h3>
-              <p class="muted">O básico bem feito. Ideal pra retirada ou delivery rápido.</p>
-              <div class="highlight__actions">
-                <a class="btn btn--primary" href="#checkout">Pedir agora</a>
-                <a class="btn btn--ghost" href="#menu">Ver cardápio</a>
-              </div>
-            </div>
-            <div class="highlight__media">
-              <img src="https://images.unsplash.com/photo-1521305916504-4a1121188589?auto=format&fit=crop&w=1200&q=80" alt="">
-            </div>
-          </div>
-
-          <div class="highlight highlight--dark">
-            <div class="highlight__content">
-              <p class="pill pill--dark">Assinatura premium</p>
-              <h3>Latte Pistache (Autoral)</h3>
-              <p class="muted">Mais “chique”, mais marcante. Contraste perfeito com o clássico.</p>
-              <div class="highlight__actions">
-                <a class="btn btn--green" href="#checkout">Quero experimentar</a>
-                <a class="btn btn--ghost" href="#menu">Detalhes</a>
-              </div>
-            </div>
-            <div class="highlight__media">
-              <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=80" alt="">
-            </div>
-          </div>
+        <div class="grid grid--3" id="menu-container">
+          <!-- PRODUTOS VIRÃO DO menuData.js -->
         </div>
+
       </div>
     </section>
 
-    <!-- How it works -->
-    <section class="section section--soft" id="como-funciona">
-      <div class="container">
-        <div class="section__head">
-          <h2>Retirada ou Delivery</h2>
-          <p>Simples, rápido e com status do pedido (você vai implementar depois).</p>
-        </div>
-
-        <div class="grid grid--3">
-          <div class="step step--brown">
-            <span class="step__num">1</span>
-            <h3>Escolha</h3>
-            <p class="muted">Selecione itens e personalize com tamanho, leite e extras.</p>
-          </div>
-          <div class="step step--green">
-            <span class="step__num">2</span>
-            <h3>Finalize</h3>
-            <p class="muted">Escolha retirada ou delivery e preencha os dados.</p>
-          </div>
-          <div class="step step--gold">
-            <span class="step__num">3</span>
-            <h3>Acompanhe</h3>
-            <p class="muted">Recebido → Em preparo → Pronto → Entregue/Retirado.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Checkout anchor -->
-    <section class="section" id="checkout">
-      <div class="container">
-        <div class="checkout">
-          <div class="checkout__left">
-            <h2>Checkout (placeholder)</h2>
-            <p class="muted">Depois você liga no carrinho/JS e integra com sua API.</p>
-
-            <div class="checkout__tabs" role="tablist" aria-label="Tipo de entrega">
-              <button class="chip chip--active" type="button">Retirada</button>
-              <button class="chip" type="button">Delivery</button>
-            </div>
-
-            <form class="form">
-              <div class="field">
-                <label for="nome">Nome</label>
-                <input id="nome" type="text" placeholder="Seu nome" />
-              </div>
-
-              <div class="grid grid--2">
-                <div class="field">
-                  <label for="telefone">Telefone</label>
-                  <input id="telefone" type="tel" placeholder="(00) 00000-0000" />
-                </div>
-                <div class="field">
-                  <label for="obs">Observações</label>
-                  <input id="obs" type="text" placeholder="Sem açúcar, bem quente..." />
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="grid grid--2">
-                <div class="field">
-                  <label for="rua">Rua</label>
-                  <input id="rua" type="text" placeholder="Rua Exemplo" />
-                </div>
-                <div class="field">
-                  <label for="numero">Número</label>
-                  <input id="numero" type="text" placeholder="123" />
-                </div>
-              </div>
-
-              <div class="grid grid--2">
-                <div class="field">
-                  <label for="bairro">Bairro</label>
-                  <input id="bairro" type="text" placeholder="Centro" />
-                </div>
-                <div class="field">
-                  <label for="ref">Referência</label>
-                  <input id="ref" type="text" placeholder="Perto da praça..." />
-                </div>
-              </div>
-
-              <button class="btn btn--primary btn--block" type="button">
-                Finalizar pedido
-              </button>
-            </form>
-          </div>
-
-          <aside class="checkout__right">
-            <h3>Resumo</h3>
-            <div class="summary">
-              <div class="summary__row">
-                <span>Itens</span>
-                <span>R$ 0,00</span>
-              </div>
-              <div class="summary__row">
-                <span>Entrega</span>
-                <span>R$ 0,00</span>
-              </div>
-              <div class="summary__row summary__total">
-                <strong>Total</strong>
-                <strong>R$ 0,00</strong>
-              </div>
-              <p class="muted small">
-                Depois você vai preencher isso com o carrinho e cálculo do back.
-              </p>
-            </div>
-
-            <div class="trust">
-              <div class="trust__item">
-                <span class="dot dot--green"></span><span>Entrega rápida e caprichada</span>
-              </div>
-              <div class="trust__item">
-                <span class="dot dot--gold"></span><span>Opções premium e clássicas</span>
-              </div>
-              <div class="trust__item">
-                <span class="dot"></span><span>Status do pedido (em breve)</span>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="section" id="depoimentos">
-      <div class="container">
-        <div class="section__head">
-          <h2>Avaliações</h2>
-          <p>Texto de exemplo só pra dar confiança no layout.</p>
-        </div>
-
-        <div class="grid grid--3">
-          <div class="quote">
-            <p>“O cappuccino é perfeito e o pão de queijo chega quentinho. Muito bom!”</p>
-            <span class="muted">— Ana, cliente</span>
-          </div>
-          <div class="quote">
-            <p>“Os especiais são diferenciados. Pedi o latte e virou meu favorito.”</p>
-            <span class="muted">— Bruno, cliente</span>
-          </div>
-          <div class="quote">
-            <p>“Checkout simples, visual bonito e dá pra acompanhar o pedido. Top.”</p>
-            <span class="muted">— Carla, cliente</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="section section--soft" id="contato">
-      <div class="container">
-        <div class="contact">
-          <div>
-            <h2>Visite ou peça agora</h2>
-            <p class="muted">Endereço fictício (troque depois).</p>
-            <div class="contact__grid">
-              <div class="contact__item"><strong>Endereço</strong><span>Av. Central, 123 — Centro</span></div>
-              <div class="contact__item"><strong>Horário</strong><span>Seg–Sáb • 08:00–20:00</span></div>
-              <div class="contact__item"><strong>WhatsApp</strong><span>(00) 00000-0000</span></div>
-            </div>
-          </div>
-
-          <div class="newsletter">
-            <h3>Novidades & promos</h3>
-            <p class="muted small">Campo só pra layout.</p>
-            <div class="newsletter__row">
-              <input type="email" placeholder="seuemail@exemplo.com" />
-              <button class="btn btn--green" type="button">Assinar</button>
-            </div>
-            <p class="muted small">Ao assinar, você aceita receber comunicações.</p>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
-    <div class="container footer__grid">
-      <div class="footer__brand">
-        <div class="brand brand--footer">
-          <span class="brand__mark">☕</span>
-          <span class="brand__text">
-            <strong>Aurora</strong> <em>Café</em>
-          </span>
-        </div>
-        <p class="muted small">Cafeteria clássico-moderna com retirada e delivery.</p>
-      </div>
-
-      <div class="footer__col">
-        <h4>Loja</h4>
-        <a href="#menu">Cardápio</a>
-        <a href="#checkout">Fazer pedido</a>
-        <a href="#como-funciona">Retirada/Delivery</a>
-      </div>
-
-      <div class="footer__col">
-        <h4>Empresa</h4>
-        <a href="#contato">Contato</a>
-        <a href="#depoimentos">Avaliações</a>
-        <a href="#topo">Voltar ao topo</a>
-      </div>
-
-      <div class="footer__col">
-        <h4>Social</h4>
-        <a href="#">Instagram</a>
-        <a href="#">TikTok</a>
-        <a href="#">YouTube</a>
-      </div>
-    </div>
-
     <div class="container footer__bottom">
-      <span class="muted small">© <span id="year"></span> Aurora Café. Projeto de portfólio.</span>
-      <span class="muted small">Feito com HTML/CSS/JS</span>
+      <span>© <span id="year"></span> Aurora Café</span>
     </div>
   </footer>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <!-- ORDEM CORRETA -->
+  <script src="js/menuData.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
