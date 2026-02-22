@@ -97,45 +97,90 @@ function renderCart() {
   let subtotal = 0;
   for (const [id, qty] of Object.entries(cart)) {
     const produto = menuData.find((p) => String(p.id) === String(id));
-    subtotal += produto.price * qty;
+
     if (!produto) continue; 
 
-    html += `
-  <div class="cart-item">
-    <div class="cart-item__details">
-      <h4>${produto.name}</h4>
-      <p class="cart-item__line">
-        <span class="muted">R$ ${(produto.price * qty).toFixed(2)}</span>
-      </p>
-    </div>
+    subtotal += produto.price * qty;
 
-    <div class="cart-item__controls">
-      <div class="qty" aria-label="Quantidade">
-        <button class="qty__btn qty__btn--minus" type="button" data-product="${id}" aria-label="Diminuir">−</button>
-        <span class="qty__value" aria-label="Quantidade atual">${qty}</span>
-        <button class="qty__btn qty__btn--plus" type="button" data-product="${id}" aria-label="Aumentar">+</button>
+    html += `
+  <div class="cart-item" data-product="${id}">
+    <div class="cart-item__main">
+      <div class="cart-item__details">
+        <h4>${produto.name}</h4>
+        <p class="cart-item__line">
+          <span class="muted">R$ ${(produto.price * qty).toFixed(2)}</span>
+        </p>
       </div>
 
-      <button class="trash-btn" type="button" data-product="${id}" aria-label="Remover item">
-        🗑️
-      </button>
+      <div class="cart-item__controls">
+        <div class="qty" aria-label="Quantidade">
+          <button class="qty__btn qty__btn--minus" type="button" data-product="${id}" aria-label="Diminuir">−</button>
+          <span class="qty__value" aria-label="Quantidade atual">${qty}</span>
+          <button class="qty__btn qty__btn--plus" type="button" data-product="${id}" aria-label="Aumentar">+</button>
+        </div>
+
+        <button class="trash-btn" type="button" data-product="${id}" aria-label="Remover item">🗑️</button>
+
+        <!-- NOVO: Toggle (seta) -->
+        <button class="expand-btn" type="button" data-expand="${id}" aria-expanded="false" aria-label="Ver detalhes do item">
+          <span class="expand-btn__icon">▾</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- NOVO: Área expandida -->
+    <div class="cart-item__expand" id="expand-${id}" aria-hidden="true">
+      <div class="cart-expand__grid">
+        <div class="cart-expand__col">
+          <h5>Detalhes</h5>
+          <p class="cart-expand__desc">${produto.description}</p>
+
+          <div class="cart-expand__kv">
+            <span>Tamanho</span>
+            <strong class="muted">A implementar</strong>
+          </div>
+
+          <div class="cart-expand__kv">
+            <span>Adicionais</span>
+            <strong class="muted">A implementar</strong>
+          </div>
+        </div>
+
+        <div class="cart-expand__col">
+          <h5>Resumo</h5>
+
+          <div class="cart-expand__kv">
+            <span>Preço unitário</span>
+            <strong>R$ ${Number(produto.price).toFixed(2)}</strong>
+          </div>
+
+          <div class="cart-expand__kv">
+            <span>Total do item</span>
+            <strong>R$ ${(produto.price * qty).toFixed(2)}</strong>
+          </div>
+
+          <div class="cart-expand__meta">
+            <span class="meta-pill">⏱️ 15–25 min (placeholder)</span>
+            <span class="status-pill status-pill--created">🟡 Criado</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
 `;
-  }
-      html += `
-  <div class="cart-summary">
-    <div class="cart-summary__row">
-      <span>Subtotal</span>
-      <strong>R$ ${subtotal.toFixed(2)}</strong>
-    </div>
+      }
+          html += `
+      <div class="cart-summary">
+        <div class="cart-summary__row">
+          <span>Subtotal</span>
+          <strong>R$ ${subtotal.toFixed(2)}</strong>
+        </div>
 
-    <button class="btn btn--green btn--block">
-      Finalizar pedido
-    </button>
-  </div>
-`;
+        <button class="btn btn--green btn--block">
+          Finalizar pedido
+        </button>
+      </div>
+    `;
   cartBody.innerHTML = html;
 
 
@@ -195,9 +240,8 @@ function closeCart() {
 // Inicialização
 // ==============================
 renderMenu();
-  persistCart();
-  renderCart();
-  updateCartCount();
+renderCart();
+updateCartCount();
 
 const addButtons = document.querySelectorAll('.addButton');
 
@@ -259,11 +303,23 @@ cartBody.addEventListener('click', (e) => {
   const minusBtn = e.target.closest('.qty__btn--minus');
   const plusBtn  = e.target.closest('.qty__btn--plus');
   const trashBtn = e.target.closest('.trash-btn');
+  const expandBtn = e.target.closest('.expand-btn');
+  
+  if (!minusBtn && !plusBtn && !trashBtn && !expandBtn) return;
+  const btn = trashBtn || minusBtn || plusBtn || expandBtn;
 
-  if (!minusBtn && !plusBtn && !trashBtn) return;
-  const btn = trashBtn || minusBtn || plusBtn;
- 
   const id = btn.getAttribute('data-product');
+
+  if (expandBtn) {const cartItem = expandBtn.closest('.cart-item');
+  const isOpen = cartItem.classList.toggle('is-expanded');
+
+  expandBtn.setAttribute('aria-expanded', String(isOpen));
+
+  const expandArea = cartItem.querySelector('.cart-item__expand');
+  if (expandArea) expandArea.setAttribute('aria-hidden', String(!isOpen));
+
+  return;
+}
 
   if (trashBtn){
     return removeCart(id);

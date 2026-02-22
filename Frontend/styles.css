@@ -979,6 +979,7 @@ input:focus{
 
 /* ===========================
    CART ITEM — CONTROLES (+ / - / lixeira)
+   (consolidado: mantém o MESMO resultado final, sem duplicar .cart-item)
    =========================== */
 
 .cart-item{
@@ -987,6 +988,21 @@ input:focus{
   align-items: center;
   justify-content: space-between;
   gap: 14px;
+
+  padding: 14px;
+  border-radius: 14px;
+
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.05);
+
+  margin-bottom: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cart-item:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
 }
 
 .cart-item__details{
@@ -1093,5 +1109,523 @@ input:focus{
   .cart-item__controls{
     flex-direction: column;
     align-items: flex-end;
+  }
+}
+
+/* ===========================
+   CART ITEM — ÁREA EXPANDIDA (embaixo)
+   =========================== */
+
+/* fechado por padrão */
+.cart-item__expand{
+  margin-top: 10px;
+
+  /* separador sutil */
+  border-top: 1px solid rgba(0,0,0,.08);
+  padding-top: 10px;
+
+  /* colapsado */
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transition: max-height .25s ease, opacity .18s ease;
+}
+
+/* aberto (você aplica .is-expanded no .cart-item) */
+.cart-item.is-expanded .cart-item__expand{
+  max-height: 520px; /* grande o suficiente p/ conteúdo */
+  opacity: 1;
+}
+
+/* conteúdo interno: bloco bonito */
+.cart-expand__grid{
+  display: grid;
+  grid-template-columns: 1fr; /* <-- SEMPRE um embaixo do outro */
+  gap: 10px;
+
+  padding: 12px;
+  border-radius: 14px;
+
+  /* sem branco: fundo suave (ajuste se seu fundo for bem escuro/claro) */
+  background: rgba(0,0,0,.04);
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+/* coluna */
+.cart-expand__col{ min-width: 0; }
+
+/* título */
+.cart-expand__col h5,
+.cart-expand__title{
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.55);
+}
+
+/* descrição */
+.cart-expand__desc{
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(0,0,0,.78);
+}
+
+/* linhas kv (um embaixo do outro e mais “premium”) */
+.cart-expand__kv{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 10px 10px;
+  border-radius: 12px;
+
+  background: rgba(255,255,255,.55); /* bem leve, não “branco chapado” */
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.cart-expand__kv span{
+  font-size: 13px;
+  color: rgba(0,0,0,.55);
+}
+
+.cart-expand__kv strong{
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(0,0,0,.82);
+}
+
+.cart-expand__kv strong.muted,
+.cart-expand__kv .muted{
+  color: rgba(0,0,0,.45);
+  font-weight: 800;
+}
+
+/* ===========================
+   CART — VISUAL DARK + EXPAND ABAIXO
+   (cole no FINAL do styles.css)
+   =========================== */
+
+/* O item vira um “card dark glass” */
+.cart-item{
+  /* mantém a estrutura, mas permite a área expandida quebrar linha */
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  padding: 14px;
+  border-radius: 16px;
+
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 14px 34px rgba(0,0,0,.30);
+
+  margin-bottom: 12px;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+
+.cart-item:hover{
+  transform: translateY(-1px);
+  border-color: rgba(214,192,137,.18);
+  background: rgba(255,255,255,.04);
+  box-shadow: 0 18px 44px rgba(0,0,0,.38);
+}
+
+/* Textos no tema escuro */
+.cart-item__details h4{
+  color: rgba(255,255,255,.92);
+  font-weight: 850;
+}
+.cart-item__line{
+  color: rgba(255,255,255,.72);
+}
+
+/* Controles continuam à direita, mas com visual dark */
+.cart-item__controls{
+  margin-left: auto; /* garante que fica na direita */
+}
+
+/* Pill da quantidade (dark) */
+.cart-item .qty{
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.22);
+}
+
+/* Botões +/− (dark) */
+.cart-item .qty__btn{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+}
+
+.cart-item .qty__btn:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(214,192,137,.22);
+}
+
+.cart-item .qty__value{
+  color: rgba(255,255,255,.92);
+}
+
+/* Lixeira (dark) */
+.trash-btn{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+}
+
+.trash-btn:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(214,192,137,.22);
+}
+
+/* ===========================
+   EXPAND: SEMPRE ABAIXO DO ITEM
+   =========================== */
+
+/* a área expandida ocupa 100% da largura e quebra linha */
+.cart-item__expand{
+  flex: 0 0 100%;
+  width: 100%;
+
+  margin-top: 10px;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(255,255,255,.10);
+
+  /* fechado por padrão */
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transition: max-height .25s ease, opacity .18s ease;
+}
+
+/* quando abrir (você aplica .is-expanded no .cart-item) */
+.cart-item.is-expanded .cart-item__expand{
+  max-height: 520px;
+  opacity: 1;
+}
+
+/* conteúdo da expansão: em coluna, bonito, sem branco */
+.cart-expand__grid{
+  display: grid;
+  grid-template-columns: 1fr;  /* <-- garante “embaixo”, nunca lado a lado */
+  gap: 10px;
+
+  padding: 12px;
+  border-radius: 14px;
+
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.cart-expand__col h5{
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.72);
+}
+
+.cart-expand__desc{
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255,255,255,.82);
+}
+
+.cart-expand__kv{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.cart-expand__kv span{
+  color: rgba(255,255,255,.65);
+  font-size: 13px;
+}
+
+.cart-expand__kv strong{
+  color: rgba(255,255,255,.90);
+  font-weight: 900;
+  font-size: 13px;
+}
+
+/* Mobile: controles não quebram feio */
+@media (max-width: 420px){
+  .cart-item__controls{
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* =========================================================
+   CART — VISUAL PREMIUM (DARK) + EXPAND SEMPRE EMBAIXO
+   Cole no FINAL do styles.css
+   ========================================================= */
+
+/* 1) Card do item */
+.cart-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+  padding: 14px;
+  border-radius: 16px;
+
+  /* evita branco e evita “chapado escuro” */
+  background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 18px 45px rgba(0,0,0,.35);
+
+  /* isso garante que o expand QUEBRE e venha embaixo */
+  flex-wrap: wrap;
+}
+
+.cart-item__details h4{
+  margin: 0;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: rgba(255,255,255,.94);
+}
+
+.cart-item__line{
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: rgba(255,255,255,.70);
+}
+
+/* 2) Controles mais “clean” */
+.cart-item__controls{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+
+  margin-left: auto; /* mantém à direita */
+}
+
+.cart-item .qty{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 8px;
+  border-radius: 999px;
+
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.cart-item .qty__value{
+  min-width: 18px;
+  text-align: center;
+  font-weight: 950;
+  font-size: 13px;
+  color: rgba(255,255,255,.92);
+}
+
+.cart-item .qty__btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, filter .12s ease;
+}
+
+.cart-item .qty__btn:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(214,192,137,.22);
+}
+
+.cart-item .qty__btn:active{
+  transform: translateY(1px);
+}
+
+.trash-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, filter .12s ease;
+}
+
+.trash-btn:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(214,192,137,.22);
+}
+
+.trash-btn:active{ transform: translateY(1px); }
+
+/* 3) BOTÃO DA SETA (pra parar de ficar branco quadrado)
+   - Se você tiver uma classe específica, melhor.
+   - Aqui deixo seletores “tolerantes” pro seu HTML atual. */
+.cart-item button[aria-controls^="expand-"],
+.cart-item .expand-btn,
+.cart-item .cart-item__expandBtn,
+.cart-item .cart-item__toggle{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.92);
+
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+
+.cart-item button[aria-controls^="expand-"]:hover,
+.cart-item .expand-btn:hover,
+.cart-item .cart-item__expandBtn:hover,
+.cart-item .cart-item__toggle:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(214,192,137,.22);
+}
+
+.cart-item.is-expanded button[aria-controls^="expand-"],
+.cart-item.is-expanded .expand-btn,
+.cart-item.is-expanded .cart-item__expandBtn,
+.cart-item.is-expanded .cart-item__toggle{
+  transform: rotate(180deg);
+}
+
+/* 4) EXPAND — sempre embaixo, com visual leve */
+.cart-item__expand{
+  flex: 0 0 100%;
+  width: 100%;
+
+  margin-top: 12px;
+  padding-top: 12px;
+
+  border-top: 1px solid rgba(255,255,255,.10);
+
+  /* fechado */
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+
+  transition: max-height .25s ease, opacity .18s ease;
+}
+
+.cart-item.is-expanded .cart-item__expand{
+  max-height: 720px;
+  opacity: 1;
+}
+
+/* container interno do expand (tira aquele “blocão escuro feio”) */
+.cart-expand__grid{
+  display: grid;
+  grid-template-columns: 1fr; /* embaixo */
+  gap: 12px;
+
+  padding: 12px;
+  border-radius: 14px;
+
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+/* títulos (DETALHES / RESUMO) */
+.cart-expand__col h5,
+.cart-expand__title{
+  margin: 0;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.72);
+}
+
+/* texto de descrição mais legível */
+.cart-expand__desc{
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,.84);
+}
+
+/* KV — vira linha clean, sem “botãozão” */
+.cart-expand__kv{
+  margin-top: 10px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.cart-expand__kv span{
+  font-size: 13px;
+  color: rgba(255,255,255,.70);
+}
+
+.cart-expand__kv strong{
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(255,255,255,.92);
+}
+
+.cart-expand__kv .muted,
+.cart-expand__kv strong.muted{
+  color: rgba(255,255,255,.55);
+  font-weight: 850;
+}
+
+/* 5) RESUMO — se você tiver linhas tipo "Preço unitário / Total", deixa lindo
+   (seus elementos podem ser .cart-expand__kv também, então já fica bom) */
+.cart-expand__summary{
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  background: rgba(214,192,137,.08);
+  border: 1px solid rgba(214,192,137,.18);
+}
+
+/* Mobile */
+@media (max-width: 420px){
+  .cart-item__controls{
+    width: 100%;
+    justify-content: flex-end;
   }
 }
