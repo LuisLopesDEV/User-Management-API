@@ -71,7 +71,7 @@ function renderMenu() {
 
 function renderCart() {
   const totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
-
+  
   if (totalCount === 0) {
     cartBody.innerHTML = `
       <div class="cart-empty">
@@ -91,15 +91,27 @@ function renderCart() {
     if (!produto) continue;
 
     html += `
-      <div class="cart-item">
-        <div class="cart-item__details">
-          <h4>${produto.name}</h4>
-          <p>Quantidade: ${qty}</p>
-          <p>Preço: R$ ${(produto.price * qty).toFixed(2)}</p>
-        </div>
-        <button class="btn btn--danger removeButton" data-product="${id}">Remover</button>
+  <div class="cart-item">
+    <div class="cart-item__details">
+      <h4>${produto.name}</h4>
+      <p class="cart-item__line">
+        <span class="muted">R$ ${(produto.price * qty).toFixed(2)}</span>
+      </p>
+    </div>
+
+    <div class="cart-item__controls">
+      <div class="qty" aria-label="Quantidade">
+        <button class="qty__btn qty__btn--minus" type="button" data-product="${id}" aria-label="Diminuir">−</button>
+        <span class="qty__value" aria-label="Quantidade atual">${qty}</span>
+        <button class="qty__btn qty__btn--plus" type="button" data-product="${id}" aria-label="Aumentar">+</button>
       </div>
-    `;
+
+      <button class="trash-btn" type="button" data-product="${id}" aria-label="Remover item">
+        🗑️
+      </button>
+    </div>
+  </div>
+`;
   }
 
   cartBody.innerHTML = html;
@@ -217,7 +229,24 @@ document.addEventListener('keydown', (e) => {
 });
 
 cartBody.addEventListener('click', (e) => {
-  const btn = e.target.closest('.removeButton');
-  if (!btn) return;
-  removeCart(btn.getAttribute('data-product'));
+  const minusBtn = e.target.closest('.qty__btn--minus');
+  const plusBtn  = e.target.closest('.qty__btn--plus');
+  const trashBtn = e.target.closest('.trash-btn');
+
+  if (!minusBtn && !plusBtn && !trashBtn) return;
+  const btn = trashBtn || minusBtn || plusBtn;
+  const id = btn.getAttribute('data-product');
+
+  if (trashBtn){
+    return removeCart(id);
+  }
+if (minusBtn) {
+    if (cart[id] > 1) cart[id] -= 1;
+    else removeCart(id);
+  } else if (plusBtn) {
+    cart[id] += 1;
+  }
+
+  renderCart();
 });
+

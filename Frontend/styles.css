@@ -975,3 +975,123 @@ input:focus{
     flex: 1 1 auto;
   }
 }
+
+
+/* ===========================
+   CART ITEM — CONTROLES (+ / - / lixeira)
+   =========================== */
+
+.cart-item{
+  /* mantém seu card branco atual, só organiza melhor */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.cart-item__details{
+  min-width: 0;
+}
+
+.cart-item__details h4{
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2b2b2b;
+}
+
+.cart-item__line{
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+/* área de controles (direita) */
+.cart-item__controls{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+/* pill de quantidade */
+.cart-item .qty{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(0,0,0,.03);
+}
+
+/* botões + / - */
+.cart-item .qty__btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.9);
+  color: #2b2b2b;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  line-height: 1;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, filter .12s ease;
+}
+
+.cart-item .qty__btn:hover{
+  filter: brightness(1.02);
+  border-color: rgba(0,0,0,.16);
+}
+
+.cart-item .qty__btn:active{
+  transform: translateY(1px);
+}
+
+/* número */
+.cart-item .qty__value{
+  min-width: 18px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 13px;
+  color: #2b2b2b;
+}
+
+/* lixeira */
+.trash-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.92);
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+  line-height: 1;
+
+  transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+}
+
+.trash-btn:hover{
+  filter: brightness(1.03);
+  border-color: rgba(0,0,0,.16);
+}
+
+.trash-btn:active{
+  transform: translateY(1px);
+}
+
+/* Mobile: empilha sem ficar estranho */
+@media (max-width: 420px){
+  .cart-item{
+    align-items: flex-start;
+  }
+
+  .cart-item__controls{
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
