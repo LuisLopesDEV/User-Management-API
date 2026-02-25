@@ -230,11 +230,11 @@ function carregarProduto(produtoid) {
   pmodalPrice.textContent = `R$ ${produto.price}`;
   pmodalDescription.textContent = produto.description;
 
-  pmodalSlot.innerHTML = `
+pmodalSlot.innerHTML = `
   <div class="pmodal__option">
     <label for="size">Tamanho</label>
     <select id="size">
-      ${produto.sizes.map(s => `
+      ${(produto.sizes || []).map(s => `
         <option value="${s.id}">
           ${s.label}${s.price ? ` (+R$ ${s.price})` : ""}
         </option>
@@ -253,9 +253,35 @@ function carregarProduto(produtoid) {
       `).join("")}
     </select>
   </div>
+
+  <div class="pmodal__total">
+    <span>Total</span>
+    <strong id="pmodal-total">R$ ${Number(produto.price).toFixed(2)}</strong>
+  </div>
 `;
-document.getElementById("size").addEventListener("change", e => selectedSize = e.target.value);
-document.getElementById("addon").addEventListener("change", e => selectedAddon = e.target.value);
+
+const sizeSelect = document.getElementById("size");
+const addonSelect = document.getElementById("addon");
+
+function updateModalTotal() {
+  selectedSize = sizeSelect.value;
+  selectedAddon = addonSelect.value;
+
+  const sizeObj = (produto.sizes || []).find(s => s.id === selectedSize);
+  const addonObj = (produto.addons || []).find(a => a.id === selectedAddon);
+
+  const sizePrice = sizeObj ? sizeObj.price : 0;
+  const addonPrice = addonObj ? addonObj.price : 0;
+
+  const total = Number(produto.price) + sizePrice + addonPrice;
+
+  document.getElementById("pmodal-total").textContent = `R$ ${total.toFixed(2)}`;
+}
+
+sizeSelect.addEventListener("change", updateModalTotal);
+addonSelect.addEventListener("change", updateModalTotal);
+
+updateModalTotal();
 }
 
 function updateCartCount() {
