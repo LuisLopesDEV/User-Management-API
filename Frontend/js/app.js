@@ -36,14 +36,22 @@ const menuContainer = document.getElementById('menu-container');
 // ==============================
 // Estado
 // ==============================
-const cart = {};
+const cart = [];
 
-const savedCart = localStorage.getItem('cart');
-if (savedCart) Object.assign(cart, JSON.parse(savedCart));
+function generateCartItemId() {
+  // remove null/undefined e itens sem id antes de calcular
+  const ids = cart
+    .filter(item => item && typeof item.id === "number")
+    .map(item => item.id);
+
+  return ids.length ? Math.max(...ids) + 1 : 1;
+}
 
 function persistCart() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
+const savedCart = localStorage.getItem('cart');
+if (savedCart) cart.push(...JSON.parse(savedCart));
 
 // ==============================
 // Renderização
@@ -81,7 +89,7 @@ function renderMenu() {
 }
 
 function renderCart() {
-
+  cart.splice(0, cart.length, ...cart.filter(item => item && item.produtoId));
   const totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
 
   if (totalCount === 0) {
@@ -99,48 +107,47 @@ function renderCart() {
   let html = '';
   let subtotal = 0;
 
-  for (const [key, qty] of Object.entries(cart)) {
-  const [id, sizeId, addonId] = key.split("|");
-
-  const produto = menuData.find((p) => String(p.id) === String(id));
+  for (const item of cart) {
+  if (!item) continue; 
+  if (!item.produtoId) continue; 
+  const produto = menuData.find(p => p.id === item.produtoId);
   if (!produto) continue;
 
-  const size = (produto.sizes || []).find(s => s.id === sizeId);
-  const addon = (produto.addons || []).find(a => a.id === addonId);
+  const size = produto.sizes?.find(s => s.id === item.sizeId);
+  const addon = produto.addons?.find(a => a.id === item.addonId);
 
   const sizeLabel = size ? size.label : "Padrão";
   const addonLabel = addon ? addon.label : "Nenhum";
 
-  subtotal += produto.price * qty;
 
     html += `
-  <div class="cart-item" data-product="${id}">
+  <div class="cart-item" data-product="${item.id}">
     <div class="cart-item__main">
       <div class="cart-item__details">
         <h4>${produto.name}</h4>
         <p class="cart-item__line">
-          <span class="muted">R$ ${(produto.price * qty).toFixed(2)}</span>
+          <span class="muted">R$ ${(produto.price).toFixed(2)}</span>
         </p>
       </div>
 
       <div class="cart-item__controls">
         <div class="qty" aria-label="Quantidade">
-          <button class="qty__btn qty__btn--minus" type="button" data-product="${id}" aria-label="Diminuir">−</button>
-          <span class="qty__value" aria-label="Quantidade atual">${qty}</span>
-          <button class="qty__btn qty__btn--plus" type="button" data-product="${id}" aria-label="Aumentar">+</button>
+          <button class="qty__btn qty__btn--minus" type="button" data-product="${item.id}" aria-label="Diminuir">−</button>
+          <span class="qty__value" aria-label="Quantidade atual">${item.qty}</span>
+          <button class="qty__btn qty__btn--plus" type="button" data-product="${item.id}" aria-label="Aumentar">+</button>
         </div>
 
-        <button class="trash-btn" type="button" data-product="${id}" aria-label="Remover item">🗑️</button>
+        <button class="trash-btn" type="button" data-product="${item.id}" aria-label="Remover item">🗑️</button>
 
         <!-- NOVO: Toggle (seta) -->
-        <button class="expand-btn" type="button" data-expand="${id}" aria-expanded="false" aria-label="Ver detalhes do item">
+        <button class="expand-btn" type="button" data-expand="${item.id}" aria-expanded="false" aria-label="Ver detalhes do item">
           <span class="expand-btn__icon">▾</span>
         </button>
       </div>
     </div>
 
     <!-- NOVO: Área expandida -->
-    <div class="cart-item__expand" id="expand-${id}" aria-hidden="true">
+    <div class="cart-item__expand" id="expand-${item.id}" aria-hidden="true">
       <div class="cart-expand__grid">
         <div class="cart-expand__col">
           <h5>Detalhes</h5>
@@ -162,12 +169,12 @@ function renderCart() {
 
           <div class="cart-expand__kv">
             <span>Preço unitário</span>
-            <strong>R$ ${Number(produto.price).toFixed(2)}</strong>
+            <strong>R$ ${Number(produto.price * item.qty).toFixed(2)}</strong>
           </div>
 
           <div class="cart-expand__kv">
             <span>Total do item</span>
-            <strong>R$ ${(produto.price * qty).toFixed(2)}</strong>
+            <strong>R$ ${(produto.price * item.qty).toFixed(2)}</strong>
           </div>
 
           <div class="cart-expand__meta">
@@ -241,23 +248,38 @@ document.getElementById("addon").addEventListener("change", e => selectedAddon =
 }
 
 function updateCartCount() {
-  cartCount.textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+  const total = cart.reduce((sum, item) => {
+    if (!item) return sum;
+    return sum + (item.qty || 0);
+  }, 0);
+
+  cartCount.textContent = total;
 }
 
 // ==============================
 // Carrinho (ações)
 // ==============================
 function addCart() {
-  const key = `${produtoid}|${selectedSize}|${selectedAddon}`;
-  cart[key] = (cart[key] || 0) + 1;
+
+  const newItem = {
+    id: generateCartItemId(),
+    produtoId: produtoid,
+    sizeId: selectedSize,
+    addonId: selectedAddon,
+    qty: 1
+  };
+
+  cart.push(newItem);
 
   persistCart();
   renderCart();
   updateCartCount();
 }
 
-function removeCart(key) {
-  delete cart[key];
+function removeCart(itemId) {
+  const idx = cart.findIndex(item => item && item.id === Number(itemId));
+  if (idx !== -1) cart.splice(idx, 1);
+
   persistCart();
   renderCart();
   updateCartCount();
@@ -365,17 +387,29 @@ cartBody.addEventListener('click', (e) => {
   return;
 }
 
-  if (trashBtn){
-    return removeCart(id);
-  }
+if (trashBtn){
+  return removeCart(id);
+}
 if (minusBtn) {
-    if (cart[id] > 1) cart[id] -= 1;
-    else removeCart(id);
-  } else if (plusBtn) {
-    cart[id] += 1;
+
+  const item = cart.find(item => item && item.id === Number(id));
+  if (!item) return;
+
+  if (item.qty > 1) {
+    item.qty -= 1;
+  } else {
+    removeCart(id);
   }
 
-    persistCart();
+} else if (plusBtn) {
+
+  const item = cart.find(item => item && item.id === Number(id));
+  if (!item) return;
+
+  item.qty += 1;
+}
+
+  persistCart();
   renderCart();
   updateCartCount();
 });
