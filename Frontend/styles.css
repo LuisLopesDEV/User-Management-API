@@ -1629,3 +1629,68 @@ input:focus{
     justify-content: flex-end;
   }
 }
+
+/* ===========================
+   PMODAL — SELECT / OPÇÕES
+   =========================== */
+
+.pmodal__option{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.pmodal__option label{
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,.72);
+}
+
+/* Select estilizado */
+.pmodal__option select{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 12px 14px;
+  border-radius: 14px;
+
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.12);
+
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+  font-weight: 600;
+
+  outline: none;
+  cursor: pointer;
+
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+/* Hover / focus */
+.pmodal__option select:hover{
+  border-color: rgba(214,192,137,.35);
+}
+
+.pmodal__option select:focus{
+  border-color: rgba(214,192,137,.45);
+  box-shadow: 0 0 0 3px rgba(214,192,137,.12);
+}
+
+/* Seta customizada */
+.pmodal__option{
+  position: relative;
+}
+
+.pmodal__option::after{
+  content: "▾";
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+
+  pointer-events: none;
+  font-size: 12px;
+  color: rgba(255,255,255,.45);
+}

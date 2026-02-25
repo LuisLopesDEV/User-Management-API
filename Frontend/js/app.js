@@ -21,6 +21,8 @@ const pmodalImg = document.querySelector('#pmodal-img');
 const pmodalName = document.querySelector('#pmodal-name');
 const pmodalPrice = document.querySelector('#pmodal-price');
 const pmodalDescription = document.querySelector('#pmodal-desc');
+const pmodalSlot = document.querySelector('.pmodal__slot');
+
 
 const addCartButton = document.querySelector('#pmodal-add');
 const cancelCartButton = document.querySelector('#pmodal-cancel');
@@ -79,8 +81,9 @@ function renderMenu() {
 }
 
 function renderCart() {
+
   const totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
-  
+
   if (totalCount === 0) {
     cartBody.innerHTML = `
       <div class="cart-empty">
@@ -95,12 +98,20 @@ function renderCart() {
 
   let html = '';
   let subtotal = 0;
-  for (const [id, qty] of Object.entries(cart)) {
-    const produto = menuData.find((p) => String(p.id) === String(id));
 
-    if (!produto) continue; 
+  for (const [key, qty] of Object.entries(cart)) {
+  const [id, sizeId, addonId] = key.split("|");
 
-    subtotal += produto.price * qty;
+  const produto = menuData.find((p) => String(p.id) === String(id));
+  if (!produto) continue;
+
+  const size = (produto.sizes || []).find(s => s.id === sizeId);
+  const addon = (produto.addons || []).find(a => a.id === addonId);
+
+  const sizeLabel = size ? size.label : "Padrão";
+  const addonLabel = addon ? addon.label : "Nenhum";
+
+  subtotal += produto.price * qty;
 
     html += `
   <div class="cart-item" data-product="${id}">
@@ -137,12 +148,12 @@ function renderCart() {
 
           <div class="cart-expand__kv">
             <span>Tamanho</span>
-            <strong class="muted">A implementar</strong>
+            <strong class="muted">${sizeLabel}</strong>
           </div>
 
           <div class="cart-expand__kv">
             <span>Adicionais</span>
-            <strong class="muted">A implementar</strong>
+            <strong class="muted">${addonLabel}</strong>
           </div>
         </div>
 
@@ -193,10 +204,40 @@ function carregarProduto(produtoid) {
   const produto = menuData.find((p) => String(p.id) === String(produtoid));
   if (!produto) return;
 
+  selectedSize = produto.sizes?.[0]?.id || "";
+  selectedAddon = "";
+
   pmodalImg.src = produto.img;
   pmodalName.textContent = produto.name;
   pmodalPrice.textContent = `R$ ${produto.price}`;
   pmodalDescription.textContent = produto.description;
+
+  pmodalSlot.innerHTML = `
+  <div class="pmodal__option">
+    <label for="size">Tamanho</label>
+    <select id="size">
+      ${produto.sizes.map(s => `
+        <option value="${s.id}">
+          ${s.label}${s.price ? ` (+R$ ${s.price})` : ""}
+        </option>
+      `).join("")}
+    </select>
+  </div>
+
+  <div class="pmodal__option">
+    <label for="addon">Adicional</label>
+    <select id="addon">
+      <option value="">Nenhum</option>
+      ${(produto.addons || []).map(a => `
+        <option value="${a.id}">
+          ${a.label} (+R$ ${a.price})
+        </option>
+      `).join("")}
+    </select>
+  </div>
+`;
+document.getElementById("size").addEventListener("change", e => selectedSize = e.target.value);
+document.getElementById("addon").addEventListener("change", e => selectedAddon = e.target.value);
 }
 
 function updateCartCount() {
@@ -207,16 +248,17 @@ function updateCartCount() {
 // Carrinho (ações)
 // ==============================
 function addCart() {
-  cart[produtoid] = (cart[produtoid] || 0) + 1;
+  const key = `${produtoid}|${selectedSize}|${selectedAddon}`;
+  cart[key] = (cart[key] || 0) + 1;
 
-    persistCart();
+  persistCart();
   renderCart();
   updateCartCount();
 }
 
-function removeCart(produtoid) {
-  delete cart[produtoid];
-    persistCart();
+function removeCart(key) {
+  delete cart[key];
+  persistCart();
   renderCart();
   updateCartCount();
 }
@@ -246,6 +288,8 @@ updateCartCount();
 const addButtons = document.querySelectorAll('.addButton');
 
 let produtoid = null;
+let selectedSize = "";
+let selectedAddon = "";
 
 addButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
