@@ -51,7 +51,11 @@ function persistCart() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 const savedCart = localStorage.getItem('cart');
-if (savedCart) cart.push(...JSON.parse(savedCart));
+if (savedCart) {
+  const parsed = JSON.parse(savedCart);
+  if (Array.isArray(parsed)) cart.push(...parsed.filter(Boolean));
+  else localStorage.removeItem('cart');
+}
 
 // ==============================
 // Renderização
@@ -90,7 +94,7 @@ function renderMenu() {
 
 function renderCart() {
   cart.splice(0, cart.length, ...cart.filter(item => item && item.produtoId));
-  const totalCount = Object.values(cart).reduce((a, b) => a + b, 0);
+const totalCount = cart.reduce((sum, item) => sum + (item?.qty || 0), 0);
 
   if (totalCount === 0) {
     cartBody.innerHTML = `
@@ -98,7 +102,7 @@ function renderCart() {
         <div class="cart-empty__icon">🛒</div>
         <h4>Carrinho vazio</h4>
         <p class="muted">Adicione um café ou uma comida para começar.</p>
-        <a class="btn btn--primary" href="#menu">Ir ao cardápio</a>
+        <a class="btn btn--primary IrCardapio" href="#menu">Ir ao cardápio</a>
       </div>
     `;
     return;
@@ -115,10 +119,17 @@ function renderCart() {
 
   const size = produto.sizes?.find(s => s.id === item.sizeId);
   const addon = produto.addons?.find(a => a.id === item.addonId);
+  const sizePrice = size ? size.price : 0;
+  const addonPrice = addon ? addon.price : 0;
+
+  const produtoTotal = (produto.price + sizePrice + addonPrice)
+
+  const TotalCart = (produto.price + sizePrice + addonPrice) * item.qty;
 
   const sizeLabel = size ? size.label : "Padrão";
   const addonLabel = addon ? addon.label : "Nenhum";
 
+  subtotal += TotalCart;
 
     html += `
   <div class="cart-item" data-product="${item.id}">
@@ -126,7 +137,7 @@ function renderCart() {
       <div class="cart-item__details">
         <h4>${produto.name}</h4>
         <p class="cart-item__line">
-          <span class="muted">R$ ${(produto.price).toFixed(2)}</span>
+          <span class="muted">R$ ${(produtoTotal).toFixed(2)}</span>
         </p>
       </div>
 
@@ -169,12 +180,12 @@ function renderCart() {
 
           <div class="cart-expand__kv">
             <span>Preço unitário</span>
-            <strong>R$ ${Number(produto.price * item.qty).toFixed(2)}</strong>
+            <strong>R$ ${Number(produtoTotal).toFixed(2)}</strong>
           </div>
 
           <div class="cart-expand__kv">
             <span>Total do item</span>
-            <strong>R$ ${(produto.price * item.qty).toFixed(2)}</strong>
+            <strong>R$ ${(produtoTotal * item.qty).toFixed(2)}</strong>
           </div>
 
           <div class="cart-expand__meta">
@@ -366,6 +377,12 @@ document.addEventListener('keydown', (e) => {
 });
 
 cartBody.addEventListener('click', (e) => {
+  const btnIrCardapio = e.target.closest('.IrCardapio');
+  if (btnIrCardapio) {
+    closeCart();
+    console.log("Navegar para o cardápio");
+  }
+
   const minusBtn = e.target.closest('.qty__btn--minus');
   const plusBtn  = e.target.closest('.qty__btn--plus');
   const trashBtn = e.target.closest('.trash-btn');
@@ -386,6 +403,7 @@ cartBody.addEventListener('click', (e) => {
 
   return;
 }
+
 
 if (trashBtn){
   return removeCart(id);
@@ -408,6 +426,9 @@ if (minusBtn) {
 
   item.qty += 1;
 }
+
+
+
 
   persistCart();
   renderCart();
