@@ -98,8 +98,14 @@ async def all_users(
         .all()
     return users
 
+@users_router.get('/me', response_model=UserResponseSchema)
+async def get_user(
+    user: User = Depends(verify_token),
+    session: Session = Depends(get_session)
+):
+    return session.query(User).filter(User.id == user.id).first()
 
-@users_router.put('/{user_id}')
+@users_router.put('/me')
 async def change_user(
     schema_user: ChangeSchema,
     user: User = Depends(verify_token),
@@ -139,7 +145,7 @@ async def change_user(
     return {"message": "Usuário atualizado com sucesso"}
 
 
-@users_router.delete('/{user_id}')
+@users_router.delete('/me')
 async def delete_user(
     delete_schema: DeleteSchema,
     user: User = Depends(verify_token),

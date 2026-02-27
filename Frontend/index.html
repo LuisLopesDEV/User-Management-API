@@ -46,8 +46,21 @@
           <span class="cart__count">0</span>
         </a>
         <a class="btn btn--ghost" href="#menu">Ver cardápio</a>
-        <!-- ALTERADO: era #checkout -->
-        <a class="btn btn--primary" href="#login">Fazer pedido</a>
+
+        <!-- VISÍVEL QUANDO DESLOGADO -->
+        <a id="btn-login-header" class="btn btn--primary" href="#login">Fazer pedido</a>
+
+        <!-- VISÍVEL QUANDO LOGADO -->
+        <div id="user-area" style="display:none; align-items:center; gap:10px;">
+          <img
+            id="user-avatar"
+            src="https://ui-avatars.com/api/?name=User&background=6f4e37&color=fff"
+            alt="Foto"
+            style="width:36px;height:36px;border-radius:50%;object-fit:cover;"
+          />
+          <span id="user-name" style="font-weight:500;"></span>
+          <button id="btn-logout" class="btn btn--ghost" type="button">Sair</button>
+        </div>
       </div>
 
     </div>
@@ -115,196 +128,199 @@
 
   <!-- ===== MODAL LOGIN (SEM JS; abre com #login) ===== -->
   <!-- LOGIN -->
-<section id="login" class="modal" aria-label="Entrar" role="dialog" aria-modal="true">
-  <a href="#topo" class="modal__overlay" aria-label="Fechar"></a>
+  <section id="login" class="modal" aria-label="Entrar" role="dialog" aria-modal="true">
+    <a href="#topo" class="modal__overlay" aria-label="Fechar"></a>
 
-  <div class="modal__content" role="document">
-    <header class="modal__header">
-      <div class="modal__title">
-        <span class="modal__badge">Aurora</span>
-        <h3>Entrar</h3>
-      </div>
-      <a class="icon-btn" href="#topo" aria-label="Fechar">✕</a>
-    </header>
-
-    <div class="modal__tabs" role="tablist" aria-label="Alternar Login e Cadastro">
-      <a class="modal__tab modal__tab--active" href="#login" role="tab" aria-selected="true">Login</a>
-      <a class="modal__tab" href="#cadastro" role="tab" aria-selected="false">Cadastro</a>
-    </div>
-
-    <div class="modal__body">
-      <p class="muted">Entre para continuar seu pedido com entrega/retirada.</p>
-
-      <form class="modal__form">
-        <div class="field">
-          <label for="login-email">Email</label>
-          <input id="login-email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email" />
+    <div class="modal__content" role="document">
+      <header class="modal__header">
+        <div class="modal__title">
+          <span class="modal__badge">Aurora</span>
+          <h3>Entrar</h3>
         </div>
+        <a class="icon-btn" href="#topo" aria-label="Fechar">✕</a>
+      </header>
 
-        <div class="field">
-          <label for="login-senha">Senha</label>
-          <input id="login-senha" type="password" placeholder="••••••••" autocomplete="current-password" />
-        </div>
-
-        <button class="btn btn--primary btn--block" type="submit">Continuar</button>
-
-        <div class="modal__foot">
-          <span class="small">Ainda não tem conta?</span>
-          <a class="link-btn" href="#cadastro">Criar cadastro</a>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- CADASTRO -->
-<section id="cadastro" class="modal" aria-label="Criar conta e endereço de entrega" role="dialog" aria-modal="true">
-  <a href="#topo" class="modal__overlay" aria-label="Fechar"></a>
-
-  <div class="modal__content" role="document">
-    <header class="modal__header">
-      <div class="modal__title">
-        <span class="modal__badge modal__badge--green">Delivery</span>
-        <h3>Criar conta</h3>
-      </div>
-      <a class="icon-btn" href="#topo" aria-label="Fechar">✕</a>
-    </header>
-
-    <div class="modal__tabs" role="tablist" aria-label="Alternar Login e Cadastro">
-      <a class="modal__tab" href="#login" role="tab" aria-selected="false">Login</a>
-      <a class="modal__tab modal__tab--active" href="#cadastro" role="tab" aria-selected="true">Cadastro</a>
-    </div>
-
-    <div class="modal__body">
-      <p class="muted">Crie sua conta e informe a localidade para calcular o delivery.</p>
-
-      <form class="modal__form">
-        <!-- Dados pessoais -->
-        <div class="modal__section">
-          <h4>Dados</h4>
-
-          <div class="field">
-            <label for="cad-nome">Nome</label>
-            <input id="cad-nome" type="text" placeholder="Seu nome" autocomplete="name" />
-          </div>
-
-          <div class="field">
-            <label for="cad-email">Email</label>
-            <input id="cad-email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email" />
-          </div>
-
-          <div class="field">
-            <label for="cad-senha">Senha</label>
-            <input id="cad-senha" type="password" placeholder="Crie uma senha" autocomplete="new-password" />
-          </div>
-        </div>
-
-        <!-- Localidade / Endereço -->
-        <div class="modal__section">
-          <h4>Localidade (Delivery)</h4>
-
-          <div class="modal__grid">
-            <div class="field">
-              <label for="cad-cep">CEP</label>
-              <input id="cad-cep" type="text" inputmode="numeric" placeholder="00000-000" autocomplete="postal-code" />
-            </div>
-
-            <div class="field">
-              <label for="cad-numero">Número</label>
-              <input id="cad-numero" type="text" inputmode="numeric" placeholder="123" autocomplete="address-line2" />
-            </div>
-          </div>
-
-          <div class="modal__grid">
-            <div class="field">
-              <label for="cad-cidade">Cidade</label>
-              <input id="cad-cidade" type="text" placeholder="Sua cidade" autocomplete="address-level2" />
-            </div>
-
-            <div class="field">
-              <label for="cad-bairro">Bairro</label>
-              <input id="cad-bairro" type="text" placeholder="Seu bairro" autocomplete="address-level3" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="cad-rua">Rua / Avenida</label>
-            <input id="cad-rua" type="text" placeholder="Rua, Av..." autocomplete="street-address" />
-          </div>
-
-          <div class="field">
-            <label for="cad-comp">Complemento (opcional)</label>
-            <input id="cad-comp" type="text" placeholder="Apto, bloco, casa..." autocomplete="address-line2" />
-          </div>
-
-          <div class="modal__hint">
-            <span class="dot dot--gold"></span>
-            <span class="small">Usamos seu endereço para estimar taxa e tempo de entrega.</span>
-          </div>
-        </div>
-
-        <button class="btn btn--green btn--block" type="submit">Criar conta</button>
-
-        <div class="modal__foot">
-          <span class="small">Já tem conta?</span>
-          <a class="link-btn" href="#login">Voltar para login</a>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
-<!-- ===== MODAL PRODUTO (abre via JS) ===== -->
-<section id="produtoModal" class="pmodal" aria-label="Detalhes do produto" role="dialog" aria-modal="true">
-  <!-- overlay: no JS você fecha removendo a classe is-open -->
-  <button class="pmodal__overlay" type="button" aria-label="Fechar"></button>
-
-  <div class="pmodal__content" role="document">
-    <header class="pmodal__header">
-      <div class="pmodal__title">
-        <span class="pmodal__badge">Personalize</span>
-        <h3 id="pmodal-name">Nome do produto</h3>
+      <div class="modal__tabs" role="tablist" aria-label="Alternar Login e Cadastro">
+        <a class="modal__tab modal__tab--active" href="#login" role="tab" aria-selected="true">Login</a>
+        <a class="modal__tab" href="#cadastro" role="tab" aria-selected="false">Cadastro</a>
       </div>
 
-      <button class="icon-btn pmodal__close" id="CloseItemMenu" type="button" aria-label="Fechar">✕</button>
-    </header>
+      <div class="modal__body">
+        <p class="muted">Entre para continuar seu pedido com entrega/retirada.</p>
 
-    <div class="pmodal__body">
-      <div class="pmodal__grid">
-        <div class="pmodal__media">
-          <img id="pmodal-img" src="" alt="" />
-        </div>
-
-        <div class="pmodal__info">
-          <p id="pmodal-desc" class="muted">Descrição do produto</p>
-
-          <div class="pmodal__priceRow">
-            <span class="pmodal__price" id="pmodal-price">R$ 0,00</span>
-            <span class="badge badge--green">Delivery</span>
+        <!-- IMPORTANTE: agora o form tem id="login" para o JS capturar submit -->
+        <form id="login-form" class="modal__form">
+          <div class="field">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email" />
           </div>
 
-          <!-- FUTURO: tamanhos/adicionais entram aqui -->
-          <div class="pmodal__slot">
-            <div class="pmodal__slotHead">
-              <h4>Opções</h4>
-              <span class="small">Em breve: tamanhos e adicionais</span>
+          <div class="field">
+            <label for="login-senha">Senha</label>
+            <input id="login-senha" type="password" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+
+          <button class="btn btn--primary btn--block" type="submit">Continuar</button>
+
+          <div class="modal__foot">
+            <span class="small">Ainda não tem conta?</span>
+            <a class="link-btn" href="#cadastro">Criar cadastro</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- CADASTRO -->
+  <section id="cadastro" class="modal" aria-label="Criar conta e endereço de entrega" role="dialog" aria-modal="true">
+    <a href="#topo" class="modal__overlay" aria-label="Fechar"></a>
+
+    <div class="modal__content" role="document">
+      <header class="modal__header">
+        <div class="modal__title">
+          <span class="modal__badge modal__badge--green">Delivery</span>
+          <h3>Criar conta</h3>
+        </div>
+        <a class="icon-btn" href="#topo" aria-label="Fechar">✕</a>
+      </header>
+
+      <div class="modal__tabs" role="tablist" aria-label="Alternar Login e Cadastro">
+        <a class="modal__tab" href="#login" role="tab" aria-selected="false">Login</a>
+        <a class="modal__tab modal__tab--active" href="#cadastro" role="tab" aria-selected="true">Cadastro</a>
+      </div>
+
+      <div class="modal__body">
+        <p class="muted">Crie sua conta e informe a localidade para calcular o delivery.</p>
+
+        <form class="modal__form">
+          <!-- Dados pessoais -->
+          <div class="modal__section">
+            <h4>Dados</h4>
+
+            <div class="field">
+              <label for="cad-nome">Nome</label>
+              <input id="cad-nome" type="text" placeholder="Seu nome" autocomplete="name" />
             </div>
 
-            <div class="pmodal__empty">
+            <div class="field">
+              <label for="cad-email">Email</label>
+              <input id="cad-email" type="email" placeholder="seuemail@exemplo.com" autocomplete="email" />
+            </div>
+
+            <div class="field">
+              <label for="cad-senha">Senha</label>
+              <input id="cad-senha" type="password" placeholder="Crie uma senha" autocomplete="new-password" />
+            </div>
+          </div>
+
+          <!-- Localidade / Endereço -->
+          <div class="modal__section">
+            <h4>Localidade (Delivery)</h4>
+
+            <div class="modal__grid">
+              <div class="field">
+                <label for="cad-cep">CEP</label>
+                <input id="cad-cep" type="text" inputmode="numeric" placeholder="00000-000" autocomplete="postal-code" />
+              </div>
+
+              <div class="field">
+                <label for="cad-numero">Número</label>
+                <input id="cad-numero" type="text" inputmode="numeric" placeholder="123" autocomplete="address-line2" />
+              </div>
+            </div>
+
+            <div class="modal__grid">
+              <div class="field">
+                <label for="cad-cidade">Cidade</label>
+                <input id="cad-cidade" type="text" placeholder="Sua cidade" autocomplete="address-level2" />
+              </div>
+
+              <div class="field">
+                <label for="cad-bairro">Bairro</label>
+                <input id="cad-bairro" type="text" placeholder="Seu bairro" autocomplete="address-level3" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cad-rua">Rua / Avenida</label>
+              <input id="cad-rua" type="text" placeholder="Rua, Av..." autocomplete="street-address" />
+            </div>
+
+            <div class="field">
+              <label for="cad-comp">Complemento (opcional)</label>
+              <input id="cad-comp" type="text" placeholder="Apto, bloco, casa..." autocomplete="address-line2" />
+            </div>
+
+            <div class="modal__hint">
               <span class="dot dot--gold"></span>
-              <span class="small">Este item ainda não tem opções.</span>
+              <span class="small">Usamos seu endereço para estimar taxa e tempo de entrega.</span>
             </div>
           </div>
 
-          <div class="pmodal__actions">
-            <button class="btn btn--ghost" id="pmodal-cancel" type="button">Cancelar</button>
-            <button class="btn btn--green" id="pmodal-add" type="button">Adicionar ao carrinho</button>
+          <button class="btn btn--green btn--block" type="submit">Criar conta</button>
+
+          <div class="modal__foot">
+            <span class="small">Já tem conta?</span>
+            <a class="link-btn" href="#login">Voltar para login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MODAL PRODUTO (abre via JS) ===== -->
+  <section id="produtoModal" class="pmodal" aria-label="Detalhes do produto" role="dialog" aria-modal="true">
+    <!-- overlay: no JS você fecha removendo a classe is-open -->
+    <button class="pmodal__overlay" type="button" aria-label="Fechar"></button>
+
+    <div class="pmodal__content" role="document">
+      <header class="pmodal__header">
+        <div class="pmodal__title">
+          <span class="pmodal__badge">Personalize</span>
+          <h3 id="pmodal-name">Nome do produto</h3>
+        </div>
+
+        <button class="icon-btn pmodal__close" id="CloseItemMenu" type="button" aria-label="Fechar">✕</button>
+      </header>
+
+      <div class="pmodal__body">
+        <div class="pmodal__grid">
+          <div class="pmodal__media">
+            <img id="pmodal-img" src="" alt="" />
+          </div>
+
+          <div class="pmodal__info">
+            <p id="pmodal-desc" class="muted">Descrição do produto</p>
+
+            <div class="pmodal__priceRow">
+              <span class="pmodal__price" id="pmodal-price">R$ 0,00</span>
+              <span class="badge badge--green">Delivery</span>
+            </div>
+
+            <!-- FUTURO: tamanhos/adicionais entram aqui -->
+            <div class="pmodal__slot">
+              <div class="pmodal__slotHead">
+                <h4>Opções</h4>
+                <span class="small">Em breve: tamanhos e adicionais</span>
+              </div>
+
+              <div class="pmodal__empty">
+                <span class="dot dot--gold"></span>
+                <span class="small">Este item ainda não tem opções.</span>
+              </div>
+            </div>
+
+            <div class="pmodal__actions">
+              <button class="btn btn--ghost" id="pmodal-cancel" type="button">Cancelar</button>
+              <button class="btn btn--green" id="pmodal-add" type="button">Adicionar ao carrinho</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<pre id="saida"></pre>
+  </section>
+
+  <pre id="saida"></pre>
 
   <!-- ORDEM CORRETA -->
   <script src="js/menuData.js"></script>
