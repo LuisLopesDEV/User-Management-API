@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Boolean, Float
 from sqlalchemy.orm import declarative_base, relationship
 from Backend.config import DATABASE_URL
+
 db = create_engine(DATABASE_URL, pool_pre_ping=True)
 Base = declarative_base()
 
