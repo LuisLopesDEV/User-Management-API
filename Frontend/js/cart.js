@@ -66,6 +66,7 @@ document.getElementById("login").addEventListener("submit", async (e) => {
 
   localStorage.setItem("token", data.access_token);
   location.hash = "#topo";
+  boot(); // Atualiza a interface após login
   console.log("Token armazenado:", data.access_token);
 });
 
@@ -82,22 +83,43 @@ async function authFetch(path, options = {}) {
 
   return res;}
 
-  async function boot() {
+function showLoggedUser(user) {
+  document.getElementById("btn-login-header").style.display = "none";
+  const userArea = document.getElementById("user-area");
+  userArea.style.display = "flex";
+
+  document.getElementById("user-name").textContent = user.name || user.email;
+
+  // Avatar automático baseado no nome
+  document.getElementById("user-avatar").src =
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=6f4e37&color=fff`;
+}
+
+function showGuest() {
+  document.getElementById("btn-login-header").style.display = "";
+  document.getElementById("user-area").style.display = "none";
+}
+
+async function boot() {
   const token = localStorage.getItem("token");
   if (!token) return;
 
-  const res = await authFetch("/users/me"); // TROQUE pela sua rota real
+  const res = await fetch(`${API_BASE}/users/me`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
 
-  if (res.status === 401) {
+  if (res.ok) {
+    const me = await res.json();
+    showLoggedUser(me);
+  } else {
     localStorage.removeItem("token");
-    return;
+    showGuest();
   }
-
-  const me = await res.json();
-  console.log("Logado como:", me);
-
-  // aqui você atualiza a interface (ex.: mostrar nome, esconder botão Entrar)
-  // document.getElementById("userName").textContent = me.name;
 }
 
 boot();
+
+document.getElementById("btn-logout").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  showGuest();
+});
