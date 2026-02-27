@@ -3,15 +3,24 @@ const API_BASE = "http://127.0.0.1:8000"; // troque pela porta da sua API
 document.getElementById("cadastro").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const payload = {
+  const payload =  {schema_user: {
     name: document.getElementById("cad-nome").value,
     email: document.getElementById("cad-email").value,
     senha: document.getElementById("cad-senha").value,
     ativo: true,
     remember: false,
     admin: false,
+  },
+   schema_local: {
+    cep: document.getElementById("cad-cep").value,
+    city: document.getElementById("cad-cidade").value,
+    neighborhood: document.getElementById("cad-bairro").value,
+    street: document.getElementById("cad-rua").value,
+    number: document.getElementById("cad-numero").value,
+    complement: document.getElementById("cad-comp").value.trim() !== "" ? 
+    document.getElementById("cad-comp").value : null}
   };
-
+  
   try {
     const res = await fetch(`${API_BASE}/users`, {
       method: "POST",
@@ -19,17 +28,16 @@ document.getElementById("cadastro").addEventListener("submit", async (e) => {
       body: JSON.stringify(payload),
     });
 
-    // Se a API retornar erro (ex: email duplicado), vamos mostrar a mensagem
     const text = await res.text();
     let data;
     console.log("Resposta da API:", text);
-    try { data = JSON.parse(text); } catch { data = text; }
+    try { data = JSON.parse(text); } catch (e) { data = text; }
 
     document.getElementById("saida").textContent =
       `Status: ${res.status}\n` + JSON.stringify(data, null, 2);
 
   } catch (err) {
-    document.getElementById("saida").textContent = "Erro: " + err.message;
+    console.log("Erro na requisição:", err);
   }
   
 });
@@ -51,3 +59,4 @@ document.getElementById("login").addEventListener("submit", async (e) => {
   const text = await res.text();
   console.log("Status:", res.status, "Resposta:", text);
 });
+
