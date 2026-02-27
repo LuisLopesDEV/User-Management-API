@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, Boolean, Float
 from sqlalchemy.orm import declarative_base, relationship
-from ..config import DATABASE_URL
+from Backend.config import DATABASE_URL
 db = create_engine(DATABASE_URL, pool_pre_ping=True)
 Base = declarative_base()
 
@@ -17,7 +17,8 @@ class User(Base):
 
     tokens = relationship("Token", back_populates="user")
     orders = relationship("Order", back_populates="user")
-
+    locals = relationship("Local", back_populates="user")
+    
     def __init__(self, name, email, senha, ativo, remember, admin):
         self.name = name
         self.email = email
@@ -26,6 +27,28 @@ class User(Base):
         self.remember = remember
         self.admin = admin
 
+class Local(Base):
+    __tablename__ = 'locals'
+
+    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    cep = Column(String(8), nullable=False)
+    city = Column(String(50), nullable=False)
+    neighborhood = Column(String(50), nullable=False)  
+    street = Column(String(100), nullable=False)
+    number = Column(String(10), nullable=False)
+    complement = Column(String(100), nullable=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+
+    user = relationship("User", back_populates="locals")
+
+    def __init__(self, cep, city, neighborhood, street, number, complement=None, user_id=None):
+        self.cep = cep
+        self.city = city
+        self.neighborhood = neighborhood
+        self.street = street
+        self.number = number
+        self.complement = complement
+        self.user_id = user_id
 
 class Token(Base):
     __tablename__ = 'tokens'

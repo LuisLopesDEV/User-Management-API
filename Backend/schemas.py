@@ -12,6 +12,17 @@ class UserSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class UserLocalSchema(BaseModel):
+    cep: str
+    city: str
+    neighborhood: str
+    street: str
+    number: str
+    complement: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
+
 class ChangeSchema(BaseModel):
     nome: str
     email: EmailStr

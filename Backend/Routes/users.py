@@ -1,15 +1,15 @@
 import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from ..Database.database import User
-from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema
+from ..Database.database import User, Local
+from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema, UserLocalSchema
 from ..Routes.resources import get_session, verify_token
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
 
 @users_router.post('', response_model=UserResponseSchema)
-async def signup(schema_user: UserSchema, session: Session = Depends(get_session)):
+async def signup(schema_user: UserSchema,schema_local: UserLocalSchema, session: Session = Depends(get_session)):
     """
     Cria um novo usuário no sistema.
 
@@ -27,7 +27,8 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
         User: Usuário recém-criado.
     """
     email = session.query(User).filter(User.email == schema_user.email).first()
-    senha_bytes = schema_user.senha.encode('utf-8')
+    senha_str = schema_user.senha.get_secret_value()
+    senha_bytes = senha_str.encode('utf-8')
     hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
 
     if email:
@@ -45,7 +46,21 @@ async def signup(schema_user: UserSchema, session: Session = Depends(get_session
             schema_user.admin
         )
         session.add(new_user)
+        session.flush()
+        new_userlocal = Local(
+            schema_local.cep,
+            schema_local.city,
+            schema_local.neighborhood,
+            schema_local.street,
+            schema_local.number,
+            schema_local.complement,
+            new_user.id
+        )
+        
+        session.add(new_userlocal)
         session.commit()
+        session.refresh(new_user)
+
     return new_user
 
 
