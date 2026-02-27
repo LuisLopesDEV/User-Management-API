@@ -27,7 +27,8 @@ def authenticate_user(email, senha, session):
             caso contrário retorna False.
     """
     user = session.query(User).filter(User.email == email).first()
-    senha_bytes = senha.encode('utf-8')
+    senha_str = senha.get_secret_value() if hasattr(senha, "get_secret_value") else str(senha)
+    senha_bytes = senha_str.encode("utf-8")
 
     if not user:
         return False

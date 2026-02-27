@@ -1,10 +1,10 @@
-from pydantic import BaseModel, NonNegativeFloat, NonNegativeInt, EmailStr, Secret
+from pydantic import BaseModel, NonNegativeFloat, NonNegativeInt, EmailStr, Secret, SecretStr
 from typing import Optional, List
 
 class UserSchema(BaseModel):
     name: str
     email: EmailStr
-    senha: str
+    senha: SecretStr
     ativo: Optional[bool] = True
     remember: Optional[bool] = False
     admin: Optional[bool] = False
@@ -15,7 +15,7 @@ class UserSchema(BaseModel):
 class ChangeSchema(BaseModel):
     nome: str
     email: EmailStr
-    senha: Secret[str]
+    senha: SecretStr
 
     class Config:
         from_attributes = True
@@ -25,7 +25,7 @@ class DeleteSchema(BaseModel):
 
 class LoginSchema(BaseModel):
     email: EmailStr
-    senha: Secret[str]
+    senha: SecretStr
     class Config:
         from_attributes = True
 
