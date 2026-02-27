@@ -7,7 +7,11 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:3000", "http://localhost:3000"],
+    allow_origins=[
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+        "https://user-management-api-coral.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
