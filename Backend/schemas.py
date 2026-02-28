@@ -23,6 +23,10 @@ class UserLocalSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class SignupSchema(BaseModel):
+    schema_user: UserSchema
+    schema_local: UserLocalSchema        
+
 class ChangeSchema(BaseModel):
     nome: str
     email: EmailStr

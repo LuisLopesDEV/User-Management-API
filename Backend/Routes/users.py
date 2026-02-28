@@ -2,65 +2,57 @@ import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from ..Database.database import User, Local
-from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema, UserLocalSchema
+from ..schemas import SignupSchema, UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema, UserLocalSchema
 from ..Routes.resources import get_session, verify_token
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
 
 @users_router.post('', response_model=UserResponseSchema)
-async def signup(schema_user: UserSchema,schema_local: UserLocalSchema, session: Session = Depends(get_session)):
-    """
-    Cria um novo usuário no sistema.
+async def signup(data: SignupSchema,
+                 session: Session = Depends(get_session)):
 
-    Realiza verificação de email duplicado e aplica hash
-    seguro na senha antes de persistir no banco.
+    schema_user = data.schema_user
+    schema_local = data.schema_local
 
-    Args:
-        schema_user (UserSchema): Dados do usuário a ser criado.
-        session (Session): Sessão ativa do banco de dados.
-
-    Raises:
-        HTTPException: Caso o email já esteja cadastrado.
-
-    Returns:
-        User: Usuário recém-criado.
-    """
     email = session.query(User).filter(User.email == schema_user.email).first()
-
-    senha_str = schema_user.senha.get_secret_value()
-    senha_bytes = senha_str.encode("utf-8")
-    hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt()).decode("utf-8")
 
     if email:
         raise HTTPException(status_code=400, detail="Email já cadastrado!")
-    else:
-        new_user = User(
-            name=schema_user.name,
-            email=schema_user.email,
-            senha=hash_senha,
-            ativo=schema_user.ativo,
-            remember=schema_user.remember,
-            admin=schema_user.admin,
-        )
 
-        session.add(new_user)
-        session.flush()  # gera new_user.id
+    senha_str = schema_user.senha.get_secret_value()
+    hash_senha = bcrypt.hashpw(
+        senha_str.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
 
-        new_userlocal = Local(
-            cep=schema_local.cep,
-            city=schema_local.city,
-            neighborhood=schema_local.neighborhood,
-            street=schema_local.street,
-            number=schema_local.number,
-            complement=schema_local.complement,
-            user_id=new_user.id,
-        )
+    new_user = User(
+        name=schema_user.name,
+        email=schema_user.email,
+        senha=hash_senha,
+        ativo=schema_user.ativo,
+        remember=schema_user.remember,
+        admin=schema_user.admin,
+    )
 
-        session.add(new_userlocal)
-        session.commit()
-        session.refresh(new_user)
-        return new_user
+    session.add(new_user)
+    session.flush()
+
+    new_userlocal = Local(
+        cep=schema_local.cep,
+        city=schema_local.city,
+        neighborhood=schema_local.neighborhood,
+        street=schema_local.street,
+        number=schema_local.number,
+        complement=schema_local.complement,
+        user_id=new_user.id,
+    )
+
+    session.add(new_userlocal)
+    session.commit()
+    session.refresh(new_user)
+
+    return new_user
 
 
 @users_router.get('', response_model=list[UserResponseSchema])
