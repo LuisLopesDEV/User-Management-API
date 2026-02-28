@@ -72,8 +72,6 @@ class OrderItemResponseSchema(BaseModel):
     qty: int
     size_id: Optional[str] = None
     addon_id: Optional[str] = None
-    unit_price: float            # calculado no backend
-    line_total: float            # calculado no backend
 
     class Config:
         from_attributes = True
@@ -82,7 +80,6 @@ class OrderResponseSchema(BaseModel):
     id: int
     user_id: int
     items: List[OrderItemResponseSchema]
-    subtotal: float
 
     class Config:
         from_attributes = True

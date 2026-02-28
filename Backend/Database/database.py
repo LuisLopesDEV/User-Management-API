@@ -74,6 +74,8 @@ class Order(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     items = relationship("OrderItem", back_populates="order")
+    user = relationship("User", back_populates="orders")
+
 class OrderItem(Base):
     __tablename__ = "order_items"
 
@@ -86,3 +88,4 @@ class OrderItem(Base):
     addon_id = Column(String, nullable=True)
 
     order = relationship("Order", back_populates="items")
+    
