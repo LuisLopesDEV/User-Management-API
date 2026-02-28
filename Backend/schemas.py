@@ -1,4 +1,4 @@
-from pydantic import BaseModel, NonNegativeFloat, NonNegativeInt, EmailStr, Secret, SecretStr
+from pydantic import BaseModel, NonNegativeFloat, NonNegativeInt, EmailStr, Secret, SecretStr, conint
 from typing import Optional, List
 
 class UserSchema(BaseModel):
@@ -46,13 +46,14 @@ class LoginSchema(BaseModel):
 
 
 
-class OrderItemSchema(BaseModel):
-    item: str
-    quantity: int
-    price: float
+class OrderItemCreateSchema(BaseModel):
+    product_id: str              # ex: "espresso"
+    qty: conint(ge=1)            # mínimo 1
+    size_id: Optional[str] = None
+    addon_id: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+class OrderCreateSchema(BaseModel):
+    items: List[OrderItemCreateSchema]
 
 
 
@@ -66,10 +67,22 @@ class UserResponseSchema(BaseModel):
     class Config:
         from_attributes = True
         
+class OrderItemResponseSchema(BaseModel):
+    product_id: str
+    qty: int
+    size_id: Optional[str] = None
+    addon_id: Optional[str] = None
+    unit_price: float            # calculado no backend
+    line_total: float            # calculado no backend
+
+    class Config:
+        from_attributes = True
+
 class OrderResponseSchema(BaseModel):
     id: int
     user_id: int
-    items: List[OrderItemSchema]
+    items: List[OrderItemResponseSchema]
+    subtotal: float
 
     class Config:
         from_attributes = True

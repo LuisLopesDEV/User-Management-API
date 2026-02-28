@@ -68,18 +68,21 @@ class Token(Base):
 
 
 class Order(Base):
-    __tablename__ = 'orders'
-    
-    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    item = Column(String(500), nullable=False)
-    quantity = Column(Integer, nullable=False)
-    price = Column(Float, nullable=False)
+    __tablename__ = "orders"
 
-    user = relationship("User", back_populates="orders")
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
 
-    def __init__(self, user_id, item, quantity, price):
-        self.user_id = user_id
-        self.item = item
-        self.quantity = quantity
-        self.price = price
+    items = relationship("OrderItem", back_populates="order")
+class OrderItem(Base):
+    __tablename__ = "order_items"
+
+    id = Column(Integer, primary_key=True)
+    order_id = Column(Integer, ForeignKey("orders.id"))
+
+    product_id = Column(String)
+    qty = Column(Integer)
+    size_id = Column(String, nullable=True)
+    addon_id = Column(String, nullable=True)
+
+    order = relationship("Order", back_populates="items")

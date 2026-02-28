@@ -1,31 +1,41 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..Database.database import User, Order
-from ..schemas import OrderSchema, OrderResponseSchemas
+from ..Database.database import OrderItem, User, Order
+from ..schemas import OrderCreateSchema, OrderResponseSchema, OrderItemCreateSchema, OrderItemResponseSchema
 from ..Routes.resources import get_session, verify_token
 
 requestes_router = APIRouter(prefix='/requests', tags=['Requests'], dependencies=[Depends(verify_token)])
 
 
-@requestes_router.post('', response_model=OrderResponseSchemas)
-async def create_order(order_schema: OrderSchema, user: User = Depends(verify_token), session: Session = Depends(get_session)):
+@requestes_router.post("", response_model=OrderResponseSchema)
+async def create_order(
+    order_create_schema: OrderCreateSchema,
+    user: User = Depends(verify_token),
+    session: Session = Depends(get_session),
+):
     """
     Cria um novo pedido para o usuário autenticado.
 
     Args:
-        order_schema (OrderSchema): Dados do pedido a ser criado.
+        order_create_schema (OrderCreateSchema): Dados do pedido a ser criado.
         user (User): Usuário autenticado via token.
         session (Session): Sessão ativa do banco de dados.
 
     Returns:
         Order: Pedido recém-criado.
     """
-    new_order = Order(
-        user.id,
-        order_schema.item,
-        order_schema.quantity,
-        order_schema.price,
+    new_order = Order(user_id=user.id)
+
+    new_order.items = [
+    OrderItem(
+        product_id=item.product_id,
+        qty=item.qty,
+        size_id=item.size_id,
+        addon_id=item.addon_id
     )
+    for item in order_create_schema.items
+]
+
     session.add(new_order)
     session.commit()
     return new_order
@@ -92,7 +102,7 @@ async def list_orders(user: User = Depends(verify_token), session: Session = Dep
 
 
 @requestes_router.put('/{order_id}')
-async def update_order(order_id: int, order_schema: OrderSchema, user: User = Depends(verify_token), session: Session = Depends(get_session)):
+async def update_order(order_id: int, order_i: OrderItemCreateSchema, user: User = Depends(verify_token), session: Session = Depends(get_session)):
     """
     Atualiza um pedido existente.
 
@@ -117,9 +127,9 @@ async def update_order(order_id: int, order_schema: OrderSchema, user: User = De
         raise HTTPException(status_code=403, detail='Você não tem autorização para fazer essa operação!')
 
     order.user_id = order.user_id
-    order.item = order_schema.item
-    order.quantity = order_schema.quantity
-    order.price = order_schema.price
+    order.item = order_i.item
+    order.quantity = order_i.quantity
+    order.price = order_i.price
 
     session.commit()
     session.refresh(order)
