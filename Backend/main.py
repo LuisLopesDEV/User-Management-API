@@ -11,6 +11,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:3000",
         "https://user-management-api-coral.vercel.app",
+        "https://auror-cafe-1.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
