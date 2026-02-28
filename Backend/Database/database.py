@@ -72,7 +72,7 @@ class Order(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    item = Column(String(50), nullable=False)
+    item = Column(String(500), nullable=False)
     quantity = Column(Integer, nullable=False)
     price = Column(Float, nullable=False)
 

@@ -44,12 +44,17 @@ class LoginSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class OrderSchema(BaseModel):
+
+
+class OrderItemSchema(BaseModel):
     item: str
-    quantity: NonNegativeInt
-    price: NonNegativeFloat
+    quantity: int
+    price: float
+
     class Config:
         from_attributes = True
+
+
 
 # Response Schemas
 
@@ -60,13 +65,11 @@ class UserResponseSchema(BaseModel):
 
     class Config:
         from_attributes = True
-
-class OrderResponseSchemas(BaseModel):
+        
+class OrderResponseSchema(BaseModel):
     id: int
     user_id: int
-    item: str
-    quantity: int
-    price: float
+    items: List[OrderItemSchema]
 
     class Config:
         from_attributes = True
