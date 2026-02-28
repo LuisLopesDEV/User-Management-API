@@ -32,13 +32,13 @@ class Local(Base):
     __tablename__ = 'locals'
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-    cep = Column(String(8), nullable=False)
+    cep = Column(String(9), nullable=False)
     city = Column(String(50), nullable=False)
     neighborhood = Column(String(50), nullable=False)  
     street = Column(String(100), nullable=False)
     number = Column(String(10), nullable=False)
     complement = Column(String(100), nullable=True)
-    
+
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship("User", back_populates="locals")
 
