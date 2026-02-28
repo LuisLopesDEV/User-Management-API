@@ -45,15 +45,12 @@ async def signup(data: SignupSchema,
         street=schema_local.street,
         number=schema_local.number,
         complement=schema_local.complement,
-        user_id=new_user.id,
     )
+
+    new_userlocal.user = new_user
 
     session.add(new_userlocal)
     session.commit()
-    session.refresh(new_user)
-
-    return new_user
-
 
 @users_router.get('', response_model=list[UserResponseSchema])
 async def all_users(
