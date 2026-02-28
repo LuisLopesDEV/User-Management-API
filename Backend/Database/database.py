@@ -38,18 +38,17 @@ class Local(Base):
     street = Column(String(100), nullable=False)
     number = Column(String(10), nullable=False)
     complement = Column(String(100), nullable=True)
+    
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-
     user = relationship("User", back_populates="locals")
 
-    def __init__(self, cep, city, neighborhood, street, number, complement=None, user_id=None):
+    def __init__(self, cep, city, neighborhood, street, number, complement=None):
         self.cep = cep
         self.city = city
         self.neighborhood = neighborhood
         self.street = street
         self.number = number
         self.complement = complement
-        self.user_id = user_id
 
 class Token(Base):
     __tablename__ = 'tokens'

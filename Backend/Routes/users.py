@@ -4,15 +4,11 @@ from sqlalchemy.orm import Session
 from ..Database.database import User, Local
 from ..schemas import SignupSchema, UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema, UserLocalSchema
 from ..Routes.resources import get_session, verify_token
+from sqlalchemy.exc import IntegrityError
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
-from sqlalchemy import text
 
-@users_router.get("/dbinfo")
-def dbinfo(session: Session = Depends(get_session)):
-    row = session.execute(text("SELECT current_database() AS db, inet_server_addr() AS host, inet_server_port() AS port")).mappings().one()
-    return dict(row)
 
 @users_router.post('', response_model=UserResponseSchema)
 async def signup(data: SignupSchema,
@@ -31,35 +27,35 @@ async def signup(data: SignupSchema,
         senha_str.encode("utf-8"),
         bcrypt.gensalt()
     ).decode("utf-8")
+    try:
+        new_user = User(
+            name=schema_user.name,
+            email=schema_user.email,
+            senha=hash_senha,
+            ativo=schema_user.ativo,
+            remember=schema_user.remember,
+            admin=schema_user.admin,
+        )
 
-    new_user = User(
-        name=schema_user.name,
-        email=schema_user.email,
-        senha=hash_senha,
-        ativo=schema_user.ativo,
-        remember=schema_user.remember,
-        admin=schema_user.admin,
-    )
+        session.add(new_user)
+        session.flush()
 
-    session.add(new_user)
-    session.flush()
+        new_userlocal = Local(
+            cep=schema_local.cep,
+            city=schema_local.city,
+            neighborhood=schema_local.neighborhood,
+            street=schema_local.street,
+            number=schema_local.number,
+            complement=schema_local.complement,
+        )
 
-    new_userlocal = Local(
-        cep=schema_local.cep,
-        city=schema_local.city,
-        neighborhood=schema_local.neighborhood,
-        street=schema_local.street,
-        number=schema_local.number,
-        complement=schema_local.complement,
-    )
-
-    new_userlocal.user = new_user
-
-    session.add(new_userlocal)
-    session.commit()
-    session.refresh(new_user)
+        new_user.locals.append(new_userlocal)  # <- melhor que new_userlocal.user = new_user
+        session.commit()
+        session.refresh(new_user)
+    except IntegrityError:
+        session.rollback()
+        raise HTTPException(status_code=400, detail="Erro ao criar usuário. Verifique os dados e tente novamente.")
     return new_user
-
 
 @users_router.get('', response_model=list[UserResponseSchema])
 async def all_users(
