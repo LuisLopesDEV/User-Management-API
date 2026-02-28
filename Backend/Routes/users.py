@@ -1,6 +1,5 @@
 import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, Query
-from requests import session
 from sqlalchemy.orm import Session
 from ..Database.database import User, Local
 from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema, UserLocalSchema
