@@ -1,5 +1,6 @@
 import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, Query
+from requests import session
 from sqlalchemy.orm import Session
 from ..Database.database import User, Local
 from ..schemas import UserSchema, ChangeSchema, DeleteSchema, UserResponseSchema, UserLocalSchema
@@ -27,41 +28,40 @@ async def signup(schema_user: UserSchema,schema_local: UserLocalSchema, session:
         User: Usuário recém-criado.
     """
     email = session.query(User).filter(User.email == schema_user.email).first()
+
     senha_str = schema_user.senha.get_secret_value()
-    senha_bytes = senha_str.encode('utf-8')
-    hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt())
+    senha_bytes = senha_str.encode("utf-8")
+    hash_senha = bcrypt.hashpw(senha_bytes, bcrypt.gensalt()).decode("utf-8")
 
     if email:
-        raise HTTPException(
-            status_code=400,
-            detail="Email já cadastrado!"
-        )
+        raise HTTPException(status_code=400, detail="Email já cadastrado!")
     else:
         new_user = User(
-            schema_user.name,
-            schema_user.email,
-            hash_senha.decode('utf-8'),
-            schema_user.ativo,
-            schema_user.remember,
-            schema_user.admin
+            name=schema_user.name,
+            email=schema_user.email,
+            senha=hash_senha,
+            ativo=schema_user.ativo,
+            remember=schema_user.remember,
+            admin=schema_user.admin,
         )
+
         session.add(new_user)
-        session.flush()
+        session.flush()  # gera new_user.id
+
         new_userlocal = Local(
-            schema_local.cep,
-            schema_local.city,
-            schema_local.neighborhood,
-            schema_local.street,
-            schema_local.number,
-            schema_local.complement,
-            new_user.id
+            cep=schema_local.cep,
+            city=schema_local.city,
+            neighborhood=schema_local.neighborhood,
+            street=schema_local.street,
+            number=schema_local.number,
+            complement=schema_local.complement,
+            user_id=new_user.id,
         )
-        
+
         session.add(new_userlocal)
         session.commit()
         session.refresh(new_user)
-
-    return new_user
+        return new_user
 
 
 @users_router.get('', response_model=list[UserResponseSchema])
