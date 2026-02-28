@@ -7,6 +7,12 @@ from ..Routes.resources import get_session, verify_token
 
 users_router = APIRouter(prefix='/users', tags=['Users'])
 
+from sqlalchemy import text
+
+@users_router.get("/dbinfo")
+def dbinfo(session: Session = Depends(get_session)):
+    row = session.execute(text("SELECT current_database() AS db, inet_server_addr() AS host, inet_server_port() AS port")).mappings().one()
+    return dict(row)
 
 @users_router.post('', response_model=UserResponseSchema)
 async def signup(data: SignupSchema,
@@ -51,6 +57,9 @@ async def signup(data: SignupSchema,
 
     session.add(new_userlocal)
     session.commit()
+    session.refresh(new_user)
+    return new_user
+
 
 @users_router.get('', response_model=list[UserResponseSchema])
 async def all_users(
