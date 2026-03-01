@@ -42,14 +42,14 @@ async def create_order(
     return new_order
 
 
-@requestes_router.get('order/me', response_model=OrderResponseSchema)
+@requestes_router.get('/me', response_model=List[OrderResponseSchema])
 async def list_order(user: User = Depends(verify_token), session: Session = Depends(get_session)):
     """
     Retorna um pedido específico com base no ID.
 
     Args:
         order_id (int): ID do pedido.
-        user (User): Usuário autenticado.
+        user (User): Usuário autenticados.
         session (Session): Sessão do banco de dados.
 
     Raises:
@@ -63,15 +63,7 @@ async def list_order(user: User = Depends(verify_token), session: Session = Depe
     if not orders:
         raise HTTPException(status_code=404, detail="Nenhum pedido encontrado")
 
-    # junta todos os itens de todos os pedidos em uma lista só
-    items = []
-    for order in orders:
-        items.extend(order.items or [])
-
-    return {
-        "user_id": user.id,
-        "order_id": orders[0].id,
-        "items": items}
+    return orders
 
 
 @requestes_router.get('orders')

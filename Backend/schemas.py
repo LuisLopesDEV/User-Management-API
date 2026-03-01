@@ -80,5 +80,5 @@ class OrderResponseSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
     user_id: int
-    order_id: int = Field(alias="id")  # pega Order.id e expõe como order_id
+    order_id: int = Field(alias="id")
     items: List["OrderItemResponseSchema"]
