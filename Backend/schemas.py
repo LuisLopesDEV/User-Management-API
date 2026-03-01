@@ -1,4 +1,4 @@
-from pydantic import BaseModel, NonNegativeFloat, NonNegativeInt, EmailStr, Secret, SecretStr, conint
+from pydantic import BaseModel, EmailStr, SecretStr, conint, Field, ConfigDict
 from typing import Optional, List
 
 class UserSchema(BaseModel):
@@ -77,9 +77,8 @@ class OrderItemResponseSchema(BaseModel):
         from_attributes = True
 
 class OrderResponseSchema(BaseModel):
-    user_id: int
-    order_id: int
-    items: List[OrderItemResponseSchema]
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
-    class Config:
-        from_attributes = True
+    user_id: int
+    order_id: int = Field(alias="id")  # pega Order.id e expõe como order_id
+    items: List["OrderItemResponseSchema"]
