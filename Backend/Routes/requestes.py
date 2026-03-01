@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from ..Database.database import OrderItem, User, Order
 from ..schemas import OrderCreateSchema, OrderResponseSchema, OrderItemCreateSchema, OrderItemResponseSchema
 from ..Routes.resources import get_session, verify_token
-
+from typing import List, Optional
 requestes_router = APIRouter(prefix='/requests', tags=['Requests'], dependencies=[Depends(verify_token)])
+
 
 
 @requestes_router.post("", response_model=OrderResponseSchema)
@@ -41,8 +42,8 @@ async def create_order(
     return new_order
 
 
-@requestes_router.get('order/{order_id}')
-async def list_order(order_id: int, user: User = Depends(verify_token), session: Session = Depends(get_session)):
+@requestes_router.get('order/me', response_model=OrderResponseSchema)
+async def list_order(user: User = Depends(verify_token), session: Session = Depends(get_session)):
     """
     Retorna um pedido específico com base no ID.
 
@@ -57,20 +58,17 @@ async def list_order(order_id: int, user: User = Depends(verify_token), session:
     Returns:
         list[Order]: Lista contendo o pedido encontrado.
     """
-    order = session.query(Order).filter(Order.id == order_id)\
-        .limit(1)\
-        .first()
+    orders = session.query(Order).filter(Order.user_id == user.id).all()
 
-    if not order:
-        raise HTTPException(status_code=400, detail='Pedido não encontrado')
+    if not orders:
+        raise HTTPException(status_code=404, detail="Nenhum pedido encontrado")
 
-    if not user.admin and order.user_id != user.id:
-        raise HTTPException(
-            status_code=403,
-            detail='Você não tem autorização para fazer essa modificação!'
-        )
+    # junta todos os itens de todos os pedidos em uma lista só
+    items = []
+    for order in orders:
+        items.extend(order.items or [])
 
-    return order
+    return {"items": items}
 
 
 @requestes_router.get('orders')

@@ -77,8 +77,6 @@ class OrderItemResponseSchema(BaseModel):
         from_attributes = True
 
 class OrderResponseSchema(BaseModel):
-    id: int
-    user_id: int
     items: List[OrderItemResponseSchema]
 
     class Config:
