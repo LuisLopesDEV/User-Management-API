@@ -68,7 +68,10 @@ async def list_order(user: User = Depends(verify_token), session: Session = Depe
     for order in orders:
         items.extend(order.items or [])
 
-    return {"items": items}
+    return {
+        "user_id": user.id,
+        "order_id": orders[0].id,
+        "items": items}
 
 
 @requestes_router.get('orders')
